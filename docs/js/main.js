@@ -1,12 +1,35 @@
 "use strict";
+var Bomb = (function () {
+    function Bomb() {
+    }
+    return Bomb;
+}());
+var Food = (function () {
+    function Food() {
+    }
+    return Food;
+}());
 var Game = (function () {
     function Game() {
         console.log("New game created!");
-        var p = new Player();
+        new Player();
     }
+    Game.getInstance = function () {
+        if (!Game.instance) {
+            Game.instance = new Game();
+        }
+        return Game.instance;
+    };
     return Game;
 }());
-window.addEventListener("load", function () { return new Game(); });
+var GameObject = (function () {
+    function GameObject() {
+    }
+    return GameObject;
+}());
+window.addEventListener("load", function () {
+    Game.getInstance();
+});
 var Player = (function () {
     function Player() {
         console.log('Player created!');
