@@ -1,6 +1,9 @@
-class Player {
+/// <reference path="gameobject.ts" />
+
+class Player extends GameObject {
 
   constructor() {
-    console.log('Player created!');
+    super();
+
   }
 }

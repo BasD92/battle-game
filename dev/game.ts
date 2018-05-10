@@ -3,10 +3,15 @@ class Game {
   // Create Game instance
   private static instance: Game;
 
+  // Private constructor Singleton
   private constructor() {
-    console.log("New game created!")
+    console.log("Game created!");
+    this.gameLoop();
+  }
 
-    new Player();
+  private gameLoop() {
+    //console.log("Game Loop test.");
+    requestAnimationFrame(()=>this.gameLoop());
   }
 
   // Check if Game object exists
