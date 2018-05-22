@@ -3,14 +3,19 @@ class Game {
   // Create Game instance
   private static instance: Game;
 
+  private player1: Player;
+
   // Private constructor Singleton
   private constructor() {
-    console.log("Game created!");
+    this.player1 = new Player("player1", 100, 100);
+
     this.gameLoop();
   }
 
   private gameLoop() {
-    //console.log("Game Loop test.");
+    // Update player
+    this.player1.update();
+
     requestAnimationFrame(()=>this.gameLoop());
   }
 

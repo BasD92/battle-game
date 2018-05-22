@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -21,6 +20,13 @@ var Bomb = (function (_super) {
     }
     return Bomb;
 }(GameObject));
+var bullet = (function (_super) {
+    __extends(bullet, _super);
+    function bullet() {
+        return _super.call(this) || this;
+    }
+    return bullet;
+}(GameObject));
 var Food = (function (_super) {
     __extends(Food, _super);
     function Food() {
@@ -30,11 +36,12 @@ var Food = (function (_super) {
 }(GameObject));
 var Game = (function () {
     function Game() {
-        console.log("Game created!");
+        this.player1 = new Player("player1", 100, 100);
         this.gameLoop();
     }
     Game.prototype.gameLoop = function () {
         var _this = this;
+        this.player1.update();
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
     Game.getInstance = function () {
@@ -50,9 +57,50 @@ window.addEventListener("load", function () {
 });
 var Player = (function (_super) {
     __extends(Player, _super);
-    function Player() {
+    function Player(nameElement, setX, setY) {
+        var _this = _super.call(this) || this;
+        _this.objectElement = document.createElement(nameElement);
+        document.body.appendChild(_this.objectElement);
+        _this.x = setX;
+        _this.y = setY;
+        _this.height = 50;
+        _this.width = 50;
+        _this.speed = 4;
+        window.addEventListener("keydown", function (e) { return _this.pressKey(e); });
+        return _this;
+    }
+    Player.prototype.pressKey = function (e) {
+        switch (e.keyCode) {
+            case 38:
+                console.log("Up arrow key was pressed!");
+                this.y -= this.speed;
+                break;
+            case 40:
+                console.log("Down arrow key was pressed!");
+                this.y += this.speed;
+                break;
+            case 37:
+                console.log("Left arrow key was pressed!");
+                this.x -= this.speed;
+                break;
+            case 39:
+                console.log("Right arrow key was pressed!");
+                this.x += this.speed;
+                break;
+        }
+    };
+    Player.prototype.update = function () {
+        this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+        this.objectElement.style.height = this.height + "px";
+        this.objectElement.style.width = this.width + "px";
+    };
+    return Player;
+}(GameObject));
+var Zombie = (function (_super) {
+    __extends(Zombie, _super);
+    function Zombie() {
         return _super.call(this) || this;
     }
-    return Player;
+    return Zombie;
 }(GameObject));
 //# sourceMappingURL=main.js.map

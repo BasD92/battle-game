@@ -1,8 +1,24 @@
 body, html {
-    margin:0; padding:0;
-    width:100%; height:100%;
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+player1 {
+  background-image: url(../img/player1.png);
+  background-size: 100% 100%;
+  position: absolute;
+  display: block;
+}
+
+player2 {
+  background-image: url(../img/player2.png);
+  background-size: 100% 100%;
+  position: absolute;
+  display: block;
 }
