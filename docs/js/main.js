@@ -36,12 +36,21 @@ var Food = (function (_super) {
 }(GameObject));
 var Game = (function () {
     function Game() {
+        this.zombies = new Array();
+        this.i = 0;
         this.player1 = new Player("player1", 100, 100);
+        for (this.i = 0; this.i < 10; this.i++) {
+            this.zombies.push(new Zombie());
+        }
         this.gameLoop();
     }
     Game.prototype.gameLoop = function () {
         var _this = this;
         this.player1.update();
+        for (var _i = 0, _a = this.zombies; _i < _a.length; _i++) {
+            var zombie = _a[_i];
+            zombie.update();
+        }
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
     Game.getInstance = function () {
@@ -54,6 +63,8 @@ var Game = (function () {
 }());
 window.addEventListener("load", function () {
     Game.getInstance();
+    console.log(window.innerWidth);
+    console.log(window.innerHeight);
 });
 var Player = (function (_super) {
     __extends(Player, _super);
@@ -99,8 +110,21 @@ var Player = (function (_super) {
 var Zombie = (function (_super) {
     __extends(Zombie, _super);
     function Zombie() {
-        return _super.call(this) || this;
+        var _this = _super.call(this) || this;
+        _this.objectElement = document.createElement("zombie");
+        document.body.appendChild(_this.objectElement);
+        _this.height = 70;
+        _this.width = 70;
+        _this.x = Math.random() * (window.innerWidth - _this.width);
+        _this.y = Math.random() * (window.innerHeight - _this.height);
+        _this.speed = 4;
+        return _this;
     }
+    Zombie.prototype.update = function () {
+        this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+        this.objectElement.style.height = this.height + "px";
+        this.objectElement.style.width = this.width + "px";
+    };
     return Zombie;
 }(GameObject));
 //# sourceMappingURL=main.js.map

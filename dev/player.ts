@@ -7,7 +7,7 @@ class Player extends GameObject {
   constructor(nameElement: string, setX: number, setY: number) {
     super();
 
-    // Append player element to parent (container)
+    // Append player element to document
     this.objectElement = document.createElement(nameElement);
     document.body.appendChild(this.objectElement);
 
