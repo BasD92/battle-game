@@ -1,4 +1,4 @@
-class GameObject {
+abstract class GameObject {
 
   protected objectElement: HTMLElement;
   public x: number;
@@ -7,6 +7,10 @@ class GameObject {
   public width: number;
 
   constructor() {
+
+  }
+
+  public update(): void {
 
   }
 }

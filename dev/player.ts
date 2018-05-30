@@ -3,6 +3,9 @@
 class Player extends GameObject {
 
   public speed: number;
+  private bullet: Bullet;
+  private bullets: Array<Bullet> = new Array();
+  private shoot: number = 0;
 
   constructor(nameElement: string, setX: number, setY: number) {
     super();
@@ -21,6 +24,9 @@ class Player extends GameObject {
 
     // Set speed
     this.speed = 4;
+
+    // Create bullet object
+    this.bullet = new Bullet(this.x, this.y);
 
     // Keyboard event listener
     window.addEventListener("keydown", (e: KeyboardEvent) => this.pressKey(e));
@@ -44,12 +50,25 @@ class Player extends GameObject {
         console.log("Right arrow key was pressed!");
         this.x += this.speed;
         break;
+      case 32: // Space bar
+        this.shoot = 1;
+        break;
     }
   }
 
   public update(): void {
+    //console.log(this.x);
     this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     this.objectElement.style.height = this.height + "px";
     this.objectElement.style.width = this.width + "px";
+
+    if (this.x == window.innerWidth - this.width) {
+
+    }
+
+    if (this.shoot == 1) {
+      //console.log("Shoot!");
+      this.bullet.update();
+    }
   }
 }

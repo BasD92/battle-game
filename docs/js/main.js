@@ -11,6 +11,8 @@ var __extends = (this && this.__extends) || (function () {
 var GameObject = (function () {
     function GameObject() {
     }
+    GameObject.prototype.update = function () {
+    };
     return GameObject;
 }());
 var Bomb = (function (_super) {
@@ -20,18 +22,37 @@ var Bomb = (function (_super) {
     }
     return Bomb;
 }(GameObject));
-var bullet = (function (_super) {
-    __extends(bullet, _super);
-    function bullet() {
-        return _super.call(this) || this;
+var Bullet = (function (_super) {
+    __extends(Bullet, _super);
+    function Bullet(setX, setY) {
+        var _this = _super.call(this) || this;
+        _this.objectElement = document.createElement("bullet");
+        document.body.appendChild(_this.objectElement);
+        _this.height = 30;
+        _this.width = 30;
+        _this.x = setX;
+        _this.y = setY;
+        _this.speed = 4;
+        return _this;
     }
-    return bullet;
+    Bullet.prototype.update = function () {
+        console.log(this.x += this.speed);
+        this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+        this.objectElement.style.height = this.height + "px";
+        this.objectElement.style.width = this.width + "px";
+    };
+    return Bullet;
 }(GameObject));
 var Food = (function (_super) {
     __extends(Food, _super);
     function Food() {
         return _super.call(this) || this;
     }
+    Food.prototype.update = function () {
+        this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+        this.objectElement.style.height = this.height + "px";
+        this.objectElement.style.width = this.width + "px";
+    };
     return Food;
 }(GameObject));
 var Game = (function () {
@@ -39,7 +60,7 @@ var Game = (function () {
         this.zombies = new Array();
         this.i = 0;
         this.player1 = new Player("player1", 100, 100);
-        for (this.i = 0; this.i < 10; this.i++) {
+        for (this.i = 0; this.i < 5; this.i++) {
             this.zombies.push(new Zombie());
         }
         this.gameLoop();
@@ -63,13 +84,13 @@ var Game = (function () {
 }());
 window.addEventListener("load", function () {
     Game.getInstance();
-    console.log(window.innerWidth);
-    console.log(window.innerHeight);
 });
 var Player = (function (_super) {
     __extends(Player, _super);
     function Player(nameElement, setX, setY) {
         var _this = _super.call(this) || this;
+        _this.bullets = new Array();
+        _this.shoot = 0;
         _this.objectElement = document.createElement(nameElement);
         document.body.appendChild(_this.objectElement);
         _this.x = setX;
@@ -77,6 +98,7 @@ var Player = (function (_super) {
         _this.height = 50;
         _this.width = 50;
         _this.speed = 4;
+        _this.bullet = new Bullet(_this.x, _this.y);
         window.addEventListener("keydown", function (e) { return _this.pressKey(e); });
         return _this;
     }
@@ -98,14 +120,34 @@ var Player = (function (_super) {
                 console.log("Right arrow key was pressed!");
                 this.x += this.speed;
                 break;
+            case 32:
+                this.shoot = 1;
+                break;
         }
     };
     Player.prototype.update = function () {
         this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
         this.objectElement.style.height = this.height + "px";
         this.objectElement.style.width = this.width + "px";
+        if (this.x == window.innerWidth - this.width) {
+        }
+        if (this.shoot == 1) {
+            this.bullet.update();
+        }
     };
     return Player;
+}(GameObject));
+var Rock = (function (_super) {
+    __extends(Rock, _super);
+    function Rock() {
+        return _super.call(this) || this;
+    }
+    Rock.prototype.update = function () {
+        this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+        this.objectElement.style.height = this.height + "px";
+        this.objectElement.style.width = this.width + "px";
+    };
+    return Rock;
 }(GameObject));
 var Zombie = (function (_super) {
     __extends(Zombie, _super);

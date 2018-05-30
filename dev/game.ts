@@ -12,7 +12,7 @@ class Game {
     this.player1 = new Player("player1", 100, 100);
 
     // Push zombies to array
-    for (this.i = 0; this.i < 10; this.i++) {
+    for (this.i = 0; this.i < 5; this.i++) {
       this.zombies.push(new Zombie());
     }
 

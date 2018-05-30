@@ -1,10 +1,9 @@
 /// <reference path="gameobject.ts" />
 
-class Food extends GameObject {
+class Rock extends GameObject {
 
   constructor() {
     super();
-
   }
 
   public update(): void {

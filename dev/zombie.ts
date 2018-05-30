@@ -23,7 +23,7 @@ class Zombie extends GameObject {
     this.speed = 4;
   }
 
-  update() {
+  public update(): void {
     //this.y += this.speed;
     this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     this.objectElement.style.height = this.height + "px";
