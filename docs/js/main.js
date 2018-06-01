@@ -46,7 +46,14 @@ var Bullet = (function (_super) {
 var Food = (function (_super) {
     __extends(Food, _super);
     function Food() {
-        return _super.call(this) || this;
+        var _this = _super.call(this) || this;
+        _this.objectElement = document.createElement("food");
+        document.body.appendChild(_this.objectElement);
+        _this.height = 50;
+        _this.width = 50;
+        _this.x = Math.random() * (window.innerWidth - _this.width);
+        _this.y = Math.random() * (window.innerHeight - _this.height);
+        return _this;
     }
     Food.prototype.update = function () {
         this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
@@ -58,10 +65,16 @@ var Food = (function (_super) {
 var Game = (function () {
     function Game() {
         this.zombies = new Array();
+        this.objects = new Array();
         this.i = 0;
+        this.x = 0;
         this.player1 = new Player("player1", 100, 100);
-        for (this.i = 0; this.i < 5; this.i++) {
+        for (this.i = 0; this.i < 4; this.i++) {
             this.zombies.push(new Zombie());
+        }
+        for (this.x = 0; this.x < 3; this.x++) {
+            this.objects.push(new Food());
+            this.objects.push(new Rock());
         }
         this.gameLoop();
     }
@@ -71,6 +84,10 @@ var Game = (function () {
         for (var _i = 0, _a = this.zombies; _i < _a.length; _i++) {
             var zombie = _a[_i];
             zombie.update();
+        }
+        for (var _b = 0, _c = this.objects; _b < _c.length; _b++) {
+            var object = _c[_b];
+            object.update();
         }
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
@@ -140,7 +157,14 @@ var Player = (function (_super) {
 var Rock = (function (_super) {
     __extends(Rock, _super);
     function Rock() {
-        return _super.call(this) || this;
+        var _this = _super.call(this) || this;
+        _this.objectElement = document.createElement("rock");
+        document.body.appendChild(_this.objectElement);
+        _this.height = 60;
+        _this.width = 60;
+        _this.x = Math.random() * (window.innerWidth - _this.width);
+        _this.y = Math.random() * (window.innerHeight - _this.height);
+        return _this;
     }
     Rock.prototype.update = function () {
         this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
@@ -159,7 +183,6 @@ var Zombie = (function (_super) {
         _this.width = 70;
         _this.x = Math.random() * (window.innerWidth - _this.width);
         _this.y = Math.random() * (window.innerHeight - _this.height);
-        _this.speed = 4;
         return _this;
     }
     Zombie.prototype.update = function () {

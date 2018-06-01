@@ -2,7 +2,7 @@
 
 class Zombie extends GameObject {
 
-  public speed: number;
+  //public speed: number;
 
   constructor() {
     super();
@@ -20,7 +20,7 @@ class Zombie extends GameObject {
     this.y = Math.random() * (window.innerHeight - this.height);
 
     // Set speed
-    this.speed = 4;
+    //this.speed = 4;
   }
 
   public update(): void {

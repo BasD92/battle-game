@@ -29,3 +29,17 @@ zombie {
   position: absolute;
   display: block;
 }
+
+food {
+  background-image: url(../img/cherry.png);
+  background-size: 100% 100%;
+  position: absolute;
+  display: block;
+}
+
+rock {
+  background-image: url(../img/rock.png);
+  background-size: 100% 100%;
+  position: absolute;
+  display: block;
+}
