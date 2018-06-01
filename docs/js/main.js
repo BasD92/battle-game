@@ -57,20 +57,18 @@ var Food = (function (_super) {
 }(GameObject));
 var Game = (function () {
     function Game() {
-        this.zombies = new Array();
+        this.gameObjects = [];
         this.i = 0;
         this.player1 = new Player("player1", 100, 100);
-        for (this.i = 0; this.i < 5; this.i++) {
-            this.zombies.push(new Zombie());
-        }
+        this.gameObjects.push(new Zombie(), new Zombie(), new Zombie(), new Zombie(), new Zombie());
         this.gameLoop();
     }
     Game.prototype.gameLoop = function () {
         var _this = this;
         this.player1.update();
-        for (var _i = 0, _a = this.zombies; _i < _a.length; _i++) {
-            var zombie = _a[_i];
-            zombie.update();
+        for (var _i = 0, _a = this.gameObjects; _i < _a.length; _i++) {
+            var objects = _a[_i];
+            objects.update();
         }
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
