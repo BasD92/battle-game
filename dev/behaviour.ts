@@ -1,0 +1,4 @@
+interface Behaviour {
+
+  update(): void;
+}

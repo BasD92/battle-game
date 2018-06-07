@@ -43,6 +43,15 @@ var Bullet = (function (_super) {
     };
     return Bullet;
 }(GameObject));
+var Fast = (function () {
+    function Fast(p) {
+        this.player = p;
+    }
+    Fast.prototype.update = function () {
+        this.player.speed = 8;
+    };
+    return Fast;
+}());
 var Food = (function (_super) {
     __extends(Food, _super);
     function Food() {
@@ -60,6 +69,9 @@ var Food = (function (_super) {
         this.objectElement.style.height = this.height + "px";
         this.objectElement.style.width = this.width + "px";
     };
+    Food.prototype.getRectangle = function () {
+        return this.objectElement.getBoundingClientRect();
+    };
     return Food;
 }(GameObject));
 var Game = (function () {
@@ -69,10 +81,10 @@ var Game = (function () {
         this.i = 0;
         this.x = 0;
         this.player1 = new Player("player1", 100, 100);
-        for (this.i = 0; this.i < 4; this.i++) {
+        for (this.i = 0; this.i < 3; this.i++) {
             this.zombies.push(new Zombie());
         }
-        for (this.x = 0; this.x < 3; this.x++) {
+        for (this.x = 0; this.x < 2; this.x++) {
             this.objects.push(new Food());
             this.objects.push(new Rock());
         }
@@ -88,6 +100,16 @@ var Game = (function () {
         for (var _b = 0, _c = this.objects; _b < _c.length; _b++) {
             var object = _c[_b];
             object.update();
+            if (object instanceof Food) {
+                if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
+                    console.log("Collission player and food!");
+                }
+            }
+            if (object instanceof Rock) {
+                if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
+                    console.log("Collission player and rock!");
+                }
+            }
         }
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
@@ -114,27 +136,23 @@ var Player = (function (_super) {
         _this.y = setY;
         _this.height = 50;
         _this.width = 50;
-        _this.speed = 4;
         _this.bullet = new Bullet(_this.x, _this.y);
+        _this.behaviour = new Fast(_this);
         window.addEventListener("keydown", function (e) { return _this.pressKey(e); });
         return _this;
     }
     Player.prototype.pressKey = function (e) {
         switch (e.keyCode) {
             case 38:
-                console.log("Up arrow key was pressed!");
                 this.y -= this.speed;
                 break;
             case 40:
-                console.log("Down arrow key was pressed!");
                 this.y += this.speed;
                 break;
             case 37:
-                console.log("Left arrow key was pressed!");
                 this.x -= this.speed;
                 break;
             case 39:
-                console.log("Right arrow key was pressed!");
                 this.x += this.speed;
                 break;
             case 32:
@@ -151,6 +169,10 @@ var Player = (function (_super) {
         if (this.shoot == 1) {
             this.bullet.update();
         }
+        this.behaviour.update();
+    };
+    Player.prototype.getRectangle = function () {
+        return this.objectElement.getBoundingClientRect();
     };
     return Player;
 }(GameObject));
@@ -171,8 +193,31 @@ var Rock = (function (_super) {
         this.objectElement.style.height = this.height + "px";
         this.objectElement.style.width = this.width + "px";
     };
+    Rock.prototype.getRectangle = function () {
+        return this.objectElement.getBoundingClientRect();
+    };
     return Rock;
 }(GameObject));
+var Slow = (function () {
+    function Slow(z) {
+        this.zombie = z;
+    }
+    Slow.prototype.update = function () {
+        this.zombie.speed = 1;
+    };
+    return Slow;
+}());
+var Util = (function () {
+    function Util() {
+    }
+    Util.checkCollision = function (a, b) {
+        return (a.left <= b.right &&
+            b.left <= a.right &&
+            a.top <= b.bottom &&
+            b.top <= a.bottom);
+    };
+    return Util;
+}());
 var Zombie = (function (_super) {
     __extends(Zombie, _super);
     function Zombie() {
@@ -183,9 +228,12 @@ var Zombie = (function (_super) {
         _this.width = 70;
         _this.x = Math.random() * (window.innerWidth - _this.width);
         _this.y = Math.random() * (window.innerHeight - _this.height);
+        _this.behaviour = new Slow(_this);
         return _this;
     }
     Zombie.prototype.update = function () {
+        this.behaviour.update();
+        this.y += this.speed;
         this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
         this.objectElement.style.height = this.height + "px";
         this.objectElement.style.width = this.width + "px";

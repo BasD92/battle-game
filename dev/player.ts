@@ -2,10 +2,10 @@
 
 class Player extends GameObject {
 
-  public speed: number;
   private bullet: Bullet;
   private bullets: Array<Bullet> = new Array();
   private shoot: number = 0;
+  private behaviour: Behaviour;
 
   constructor(nameElement: string, setX: number, setY: number) {
     super();
@@ -23,10 +23,13 @@ class Player extends GameObject {
     this.width = 50;
 
     // Set speed
-    this.speed = 4;
+    //this.speed = 1;
 
     // Create bullet object
     this.bullet = new Bullet(this.x, this.y);
+
+    // Create Fast object
+    this.behaviour = new Fast(this);
 
     // Keyboard event listener
     window.addEventListener("keydown", (e: KeyboardEvent) => this.pressKey(e));
@@ -35,19 +38,15 @@ class Player extends GameObject {
   private pressKey(e: KeyboardEvent): void {
     switch (e.keyCode) {
       case 38: // Up arrow
-        console.log("Up arrow key was pressed!");
         this.y -= this.speed;
         break;
       case 40: // Down arrow
-        console.log("Down arrow key was pressed!");
         this.y += this.speed;
         break;
       case 37: // Left arrow
-        console.log("Left arrow key was pressed!");
         this.x -= this.speed;
         break;
       case 39: // Right arrow
-        console.log("Right arrow key was pressed!");
         this.x += this.speed;
         break;
       case 32: // Space bar
@@ -70,5 +69,13 @@ class Player extends GameObject {
       //console.log("Shoot!");
       this.bullet.update();
     }
+
+    // Update fast speed behaviour
+    this.behaviour.update();
+  }
+
+  // Rectangle of Player
+  public getRectangle() {
+    return this.objectElement.getBoundingClientRect();
   }
 }

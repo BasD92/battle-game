@@ -1,7 +1,5 @@
 # Inleverdocument PRG01-8
 
-Dit is een opzet voor het inleverdocument. De exacte instructies vind je in de Modulewijzer.
-
 ## Inleiding
 
 Toelichting van je spelconcept

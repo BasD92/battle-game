@@ -5,6 +5,7 @@ abstract class GameObject {
   public y: number;
   public height: number;
   public width: number;
+  public speed: number;
 
   constructor() {
 

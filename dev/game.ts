@@ -14,12 +14,12 @@ class Game {
     this.player1 = new Player("player1", 100, 100);
 
     // Push zombies to array
-    for (this.i = 0; this.i < 4; this.i++) {
+    for (this.i = 0; this.i < 3; this.i++) {
       this.zombies.push(new Zombie());
     }
 
     // Push objects to array
-    for (this.x = 0; this.x < 3; this.x++) {
+    for (this.x = 0; this.x < 2; this.x++) {
       this.objects.push(new Food());
       this.objects.push(new Rock());
     }
@@ -39,6 +39,18 @@ class Game {
     // Update all objects in array
     for (let object of this.objects) {
       object.update();
+
+      if (object instanceof Food) {
+        if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
+          console.log("Collission player and food!");
+        }
+      }
+
+      if (object instanceof Rock) {
+        if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
+          console.log("Collission player and rock!");
+        }
+      }
     }
 
     requestAnimationFrame(() => this.gameLoop());
