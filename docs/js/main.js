@@ -10,6 +10,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var GameObject = (function () {
     function GameObject() {
+        this.speed = 0;
     }
     GameObject.prototype.update = function () {
     };
@@ -82,7 +83,7 @@ var Game = (function () {
         this.x = 0;
         this.player1 = new Player("player1", 100, 100);
         for (this.i = 0; this.i < 3; this.i++) {
-            this.zombies.push(new Zombie());
+            this.zombies.push(new Zombie(this.player1));
         }
         for (this.x = 0; this.x < 2; this.x++) {
             this.objects.push(new Food());
@@ -102,7 +103,7 @@ var Game = (function () {
             object.update();
             if (object instanceof Food) {
                 if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
-                    console.log("Collission player and food!");
+                    this.player1.strongerPlayer();
                 }
             }
             if (object instanceof Rock) {
@@ -128,7 +129,7 @@ var Player = (function (_super) {
     __extends(Player, _super);
     function Player(nameElement, setX, setY) {
         var _this = _super.call(this) || this;
-        _this.bullets = new Array();
+        _this.observers = [];
         _this.shoot = 0;
         _this.objectElement = document.createElement(nameElement);
         document.body.appendChild(_this.objectElement);
@@ -141,6 +142,15 @@ var Player = (function (_super) {
         window.addEventListener("keydown", function (e) { return _this.pressKey(e); });
         return _this;
     }
+    Player.prototype.subscribe = function (o) {
+        this.observers.push(o);
+    };
+    Player.prototype.strongerPlayer = function () {
+        for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
+            var o = _a[_i];
+            o.notify("Player is eating food and is stronger now. Zombies are more afraid of the player.");
+        }
+    };
     Player.prototype.pressKey = function (e) {
         switch (e.keyCode) {
             case 38:
@@ -220,7 +230,7 @@ var Util = (function () {
 }());
 var Zombie = (function (_super) {
     __extends(Zombie, _super);
-    function Zombie() {
+    function Zombie(s) {
         var _this = _super.call(this) || this;
         _this.objectElement = document.createElement("zombie");
         document.body.appendChild(_this.objectElement);
@@ -229,10 +239,14 @@ var Zombie = (function (_super) {
         _this.x = Math.random() * (window.innerWidth - _this.width);
         _this.y = Math.random() * (window.innerHeight - _this.height);
         _this.behaviour = new Slow(_this);
+        _this.player = s;
+        _this.player.subscribe(_this);
         return _this;
     }
+    Zombie.prototype.notify = function (m) {
+        console.log(m);
+    };
     Zombie.prototype.update = function () {
-        this.behaviour.update();
         this.y += this.speed;
         this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
         this.objectElement.style.height = this.height + "px";

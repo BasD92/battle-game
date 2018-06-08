@@ -15,7 +15,7 @@ class Game {
 
     // Push zombies to array
     for (this.i = 0; this.i < 3; this.i++) {
-      this.zombies.push(new Zombie());
+      this.zombies.push(new Zombie(this.player1));
     }
 
     // Push objects to array
@@ -42,7 +42,9 @@ class Game {
 
       if (object instanceof Food) {
         if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
-          console.log("Collission player and food!");
+          //console.log("Collission player and food!");
+          // Notify all zombies when player eats food and is stronger.
+          this.player1.strongerPlayer();
         }
       }
 

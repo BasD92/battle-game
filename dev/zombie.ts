@@ -1,10 +1,11 @@
 /// <reference path="gameobject.ts" />
 
-class Zombie extends GameObject {
+class Zombie extends GameObject implements Observer {
 
   private behaviour: Behaviour;
+  private player: Subject;
 
-  constructor() {
+  constructor(s: Subject) {
     super();
 
     // Append zombie element to document
@@ -21,11 +22,19 @@ class Zombie extends GameObject {
 
     // Create Slow object
     this.behaviour = new Slow(this);
+
+    // Subscribe Zombie to Player
+    this.player = s;
+    this.player.subscribe(this);
+  }
+
+  notify(m: string): void {
+    console.log(m);
   }
 
   public update(): void {
     // Update slow speed behaviour
-    this.behaviour.update();
+    //this.behaviour.update();
 
     this.y += this.speed;
     this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";

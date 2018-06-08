@@ -1,9 +1,11 @@
 /// <reference path="gameobject.ts" />
 
-class Player extends GameObject {
+class Player extends GameObject implements Subject {
+
+  observers: Observer[] = [];
 
   private bullet: Bullet;
-  private bullets: Array<Bullet> = new Array();
+  //private bullets: Array<Bullet> = new Array();
   private shoot: number = 0;
   private behaviour: Behaviour;
 
@@ -33,6 +35,18 @@ class Player extends GameObject {
 
     // Keyboard event listener
     window.addEventListener("keydown", (e: KeyboardEvent) => this.pressKey(e));
+  }
+
+  // Push observers to array
+  public subscribe(o: Observer): void {
+    this.observers.push(o);
+  }
+
+  // Test message of observer pattern
+  public strongerPlayer(): void {
+    for (let o of this.observers) {
+      o.notify("Player is eating food and is stronger now. Zombies are more afraid of the player.");
+    }
   }
 
   private pressKey(e: KeyboardEvent): void {
