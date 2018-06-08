@@ -39,6 +39,9 @@ var Game = (function () {
         for (var _i = 0, _a = this.zombies; _i < _a.length; _i++) {
             var zombie = _a[_i];
             zombie.update();
+            if (zombie.getRectangle().bottom - zombie.getRectangle().height > window.innerHeight) {
+                zombie.reset();
+            }
         }
         for (var _b = 0, _c = this.objects; _b < _c.length; _b++) {
             var object = _c[_b];
@@ -253,12 +256,18 @@ var Zombie = (function (_super) {
         console.log(m);
     };
     Zombie.prototype.update = function () {
+        this.behaviour.update();
         this.y += this.speed;
         this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
         this.objectElement.style.height = this.height + "px";
         this.objectElement.style.width = this.width + "px";
     };
     Zombie.prototype.reset = function () {
+        this.x = Math.random() * (window.innerWidth - this.width);
+        this.y = 0;
+    };
+    Zombie.prototype.getRectangle = function () {
+        return this.objectElement.getBoundingClientRect();
     };
     return Zombie;
 }(GameObject));

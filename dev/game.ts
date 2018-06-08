@@ -34,6 +34,10 @@ class Game {
     // Update all zombies in array
     for (let zombie of this.zombies) {
       zombie.update();
+
+      if (zombie.getRectangle().bottom - zombie.getRectangle().height > window.innerHeight) {
+        zombie.reset();
+      }
     }
 
     // Update all objects in array

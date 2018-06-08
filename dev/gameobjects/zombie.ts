@@ -34,7 +34,7 @@ class Zombie extends GameObject implements Observer {
 
   public update(): void {
     // Update slow speed behaviour
-    //this.behaviour.update();
+    this.behaviour.update();
 
     this.y += this.speed;
     this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
@@ -43,6 +43,12 @@ class Zombie extends GameObject implements Observer {
   }
 
   public reset(): void {
+    this.x = Math.random() * (window.innerWidth - this.width);
+    this.y = 0;
+  }
 
+  // Rectangle of Zombie
+  public getRectangle() {
+    return this.objectElement.getBoundingClientRect();
   }
 }
