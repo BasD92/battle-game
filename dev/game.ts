@@ -35,7 +35,12 @@ class Game {
     for (let zombie of this.zombies) {
       zombie.update();
 
-      if (zombie.getRectangle().bottom - zombie.getRectangle().height > window.innerHeight) {
+      if (Util.checkCollision(this.player1.getRectangle(), zombie.getRectangle())) {
+        console.log("Collission player and zombie!");
+        location.reload();
+      }
+
+      if (zombie.getRectangle().bottom > window.innerHeight) {
         zombie.reset();
       }
     }
@@ -62,6 +67,7 @@ class Game {
       if (object instanceof Rock) {
         if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
           console.log("Collission player and rock!");
+          location.reload();
         }
       }
     }
