@@ -7,6 +7,6 @@ class Slow implements Behaviour {
   }
 
   public update(): void {
-    this.zombie.speed = 1;
+    this.zombie.speed = 0.5;
   }
 }

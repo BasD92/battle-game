@@ -41,4 +41,8 @@ class Zombie extends GameObject implements Observer {
     this.objectElement.style.height = this.height + "px";
     this.objectElement.style.width = this.width + "px";
   }
+
+  public reset(): void {
+
+  }
 }

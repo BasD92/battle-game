@@ -24,8 +24,13 @@ class Food extends GameObject {
     this.objectElement.style.width = this.width + "px";
   }
 
-  // Rectangle of food
   public getRectangle() {
+    // Rectangle of food
     return this.objectElement.getBoundingClientRect();
+  }
+
+  public remove() {
+    // Remove element from DOM
+    this.objectElement.remove();
   }
 }

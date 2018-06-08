@@ -45,6 +45,13 @@ class Game {
           //console.log("Collission player and food!");
           // Notify all zombies when player eats food and is stronger.
           this.player1.strongerPlayer();
+
+          // Remove food element from DOM
+          object.remove();
+
+          // Remove food object from array
+          let index = this.objects.indexOf(object);
+          this.objects.splice(index, 1);
         }
       }
 

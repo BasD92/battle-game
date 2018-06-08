@@ -8,6 +8,88 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var Fast = (function () {
+    function Fast(p) {
+        this.player = p;
+    }
+    Fast.prototype.update = function () {
+        this.player.speed = 8;
+    };
+    return Fast;
+}());
+var Game = (function () {
+    function Game() {
+        this.zombies = new Array();
+        this.objects = new Array();
+        this.i = 0;
+        this.x = 0;
+        this.player1 = new Player("player1", 100, 100);
+        for (this.i = 0; this.i < 3; this.i++) {
+            this.zombies.push(new Zombie(this.player1));
+        }
+        for (this.x = 0; this.x < 2; this.x++) {
+            this.objects.push(new Food());
+            this.objects.push(new Rock());
+        }
+        this.gameLoop();
+    }
+    Game.prototype.gameLoop = function () {
+        var _this = this;
+        this.player1.update();
+        for (var _i = 0, _a = this.zombies; _i < _a.length; _i++) {
+            var zombie = _a[_i];
+            zombie.update();
+        }
+        for (var _b = 0, _c = this.objects; _b < _c.length; _b++) {
+            var object = _c[_b];
+            object.update();
+            if (object instanceof Food) {
+                if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
+                    this.player1.strongerPlayer();
+                    object.remove();
+                    var index = this.objects.indexOf(object);
+                    this.objects.splice(index, 1);
+                }
+            }
+            if (object instanceof Rock) {
+                if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
+                    console.log("Collission player and rock!");
+                }
+            }
+        }
+        requestAnimationFrame(function () { return _this.gameLoop(); });
+    };
+    Game.getInstance = function () {
+        if (!Game.instance) {
+            Game.instance = new Game();
+        }
+        return Game.instance;
+    };
+    return Game;
+}());
+window.addEventListener("load", function () {
+    Game.getInstance();
+});
+var Slow = (function () {
+    function Slow(z) {
+        this.zombie = z;
+    }
+    Slow.prototype.update = function () {
+        this.zombie.speed = 0.5;
+    };
+    return Slow;
+}());
+var Util = (function () {
+    function Util() {
+    }
+    Util.checkCollision = function (a, b) {
+        return (a.left <= b.right &&
+            b.left <= a.right &&
+            a.top <= b.bottom &&
+            b.top <= a.bottom);
+    };
+    return Util;
+}());
 var GameObject = (function () {
     function GameObject() {
         this.speed = 0;
@@ -44,15 +126,6 @@ var Bullet = (function (_super) {
     };
     return Bullet;
 }(GameObject));
-var Fast = (function () {
-    function Fast(p) {
-        this.player = p;
-    }
-    Fast.prototype.update = function () {
-        this.player.speed = 8;
-    };
-    return Fast;
-}());
 var Food = (function (_super) {
     __extends(Food, _super);
     function Food() {
@@ -73,58 +146,11 @@ var Food = (function (_super) {
     Food.prototype.getRectangle = function () {
         return this.objectElement.getBoundingClientRect();
     };
+    Food.prototype.remove = function () {
+        this.objectElement.remove();
+    };
     return Food;
 }(GameObject));
-var Game = (function () {
-    function Game() {
-        this.zombies = new Array();
-        this.objects = new Array();
-        this.i = 0;
-        this.x = 0;
-        this.player1 = new Player("player1", 100, 100);
-        for (this.i = 0; this.i < 3; this.i++) {
-            this.zombies.push(new Zombie(this.player1));
-        }
-        for (this.x = 0; this.x < 2; this.x++) {
-            this.objects.push(new Food());
-            this.objects.push(new Rock());
-        }
-        this.gameLoop();
-    }
-    Game.prototype.gameLoop = function () {
-        var _this = this;
-        this.player1.update();
-        for (var _i = 0, _a = this.zombies; _i < _a.length; _i++) {
-            var zombie = _a[_i];
-            zombie.update();
-        }
-        for (var _b = 0, _c = this.objects; _b < _c.length; _b++) {
-            var object = _c[_b];
-            object.update();
-            if (object instanceof Food) {
-                if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
-                    this.player1.strongerPlayer();
-                }
-            }
-            if (object instanceof Rock) {
-                if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
-                    console.log("Collission player and rock!");
-                }
-            }
-        }
-        requestAnimationFrame(function () { return _this.gameLoop(); });
-    };
-    Game.getInstance = function () {
-        if (!Game.instance) {
-            Game.instance = new Game();
-        }
-        return Game.instance;
-    };
-    return Game;
-}());
-window.addEventListener("load", function () {
-    Game.getInstance();
-});
 var Player = (function (_super) {
     __extends(Player, _super);
     function Player(nameElement, setX, setY) {
@@ -208,26 +234,6 @@ var Rock = (function (_super) {
     };
     return Rock;
 }(GameObject));
-var Slow = (function () {
-    function Slow(z) {
-        this.zombie = z;
-    }
-    Slow.prototype.update = function () {
-        this.zombie.speed = 1;
-    };
-    return Slow;
-}());
-var Util = (function () {
-    function Util() {
-    }
-    Util.checkCollision = function (a, b) {
-        return (a.left <= b.right &&
-            b.left <= a.right &&
-            a.top <= b.bottom &&
-            b.top <= a.bottom);
-    };
-    return Util;
-}());
 var Zombie = (function (_super) {
     __extends(Zombie, _super);
     function Zombie(s) {
@@ -251,6 +257,8 @@ var Zombie = (function (_super) {
         this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
         this.objectElement.style.height = this.height + "px";
         this.objectElement.style.width = this.width + "px";
+    };
+    Zombie.prototype.reset = function () {
     };
     return Zombie;
 }(GameObject));
