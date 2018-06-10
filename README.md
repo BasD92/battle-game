@@ -23,7 +23,7 @@ Link fork: https://github.com/BasD92/prog8project
 
 ## Peer review
 
-Link naar de peer review die je in week 6 hebt gedaan. De link gaat naar een issue in het project van een medestudent.
+Link peer review: https://github.com/Olcay4/prog8project/issues/2
 
 ## Singleton
 
