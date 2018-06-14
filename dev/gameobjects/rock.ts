@@ -19,13 +19,6 @@ class Rock extends GameObject {
   }
 
   public update(): void {
-    this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
-    this.objectElement.style.height = this.height + "px";
-    this.objectElement.style.width = this.width + "px";
-  }
-
-  // Rectangle of Rock
-  public getRectangle() {
-    return this.objectElement.getBoundingClientRect();
+    this.draw();
   }
 }

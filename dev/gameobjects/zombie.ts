@@ -13,8 +13,8 @@ class Zombie extends GameObject implements Observer {
     document.body.appendChild(this.objectElement);
 
     // Set height and width
-    this.height = 70;
-    this.width = 70;
+    this.height = 50;
+    this.width = 50;
 
     // Set random x and y axis
     this.x = Math.random() * (window.innerWidth - this.width);
@@ -30,6 +30,10 @@ class Zombie extends GameObject implements Observer {
 
   notify(m: string): void {
     console.log(m);
+    //this.speed = 12;
+    // Zombies are shrinking
+    this.height = 30;
+    this.width = 30;
   }
 
   public update(): void {
@@ -37,18 +41,11 @@ class Zombie extends GameObject implements Observer {
     this.behaviour.update();
 
     this.y += this.speed;
-    this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
-    this.objectElement.style.height = this.height + "px";
-    this.objectElement.style.width = this.width + "px";
+    this.draw();
   }
 
   public reset(): void {
     this.x = Math.random() * (window.innerWidth - this.width);
     this.y = 0;
-  }
-
-  // Rectangle of Zombie
-  public getRectangle() {
-    return this.objectElement.getBoundingClientRect();
   }
 }

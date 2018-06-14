@@ -6,7 +6,7 @@ Toelichting van je spelconcept
 
 ## Speelbare game
 
-Link naar de online speelbare game
+https://basd92.github.io/battle-game/
 
 ## Installatie
 
@@ -27,11 +27,11 @@ Link peer review: https://github.com/Olcay4/prog8project/issues/2
 
 ## Singleton
 
-Beschrijf waar en waarom je de singleton hebt toegepast.
+Ik heb Singleton toegepast in de Game class. Van de Game class hoeft maar 1 object gemaakt te worden. Als het scherm laadt, dan wordt er 1 Game object aangemaakt, doordat de Game class de static method 'getInstance' aanroept en deze method controleert of er een object is aangemaakt. Als er al een object is aangemaakt, vindt er een return plaats, als er nog geen object is aangemaakt, dan maakt deze static method het object aan.
 
 ## Polymorfisme
 
-Beschrijf van minimaal 2 plekken uit jouw code waar en waarom er gebruik is gemaakt van polymorfisme.
+In de Game class heb ik een array gemaakt waarin verschillende objecten zitten die overerven van GameObject. Door middel van een loop worden 2 Food en Rock objecten "gepusht" in de array. Met een for loop kan ik met de objecten allemaal de update() method aanroepen. Om specifiek een method aan te roepen per object gebruik ik 'instanceof'.
 
 ## Strategy
 

@@ -7,6 +7,6 @@ class Fast implements Behaviour {
   }
 
   public update(): void {
-    this.player.speed = 8;
+    this.player.speed = 12;
   }
 }

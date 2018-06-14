@@ -2,8 +2,6 @@
 
 class Bullet extends GameObject {
 
-  public speed: number;
-
   constructor(setX: number, setY: number) {
     super();
 
@@ -15,7 +13,7 @@ class Bullet extends GameObject {
     this.height = 30;
     this.width = 30;
 
-    // Set x and y axis
+    // Get x en y from Player
     this.x = setX;
     this.y = setY;
 
@@ -23,10 +21,8 @@ class Bullet extends GameObject {
     this.speed = 4;
   }
 
-  public update(): void {
-    console.log(this.x += this.speed);
-    this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
-    this.objectElement.style.height = this.height + "px";
-    this.objectElement.style.width = this.width + "px";
+  public update() {
+    this.x += this.speed;
+    this.draw();
   }
 }

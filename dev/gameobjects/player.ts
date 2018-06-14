@@ -2,11 +2,9 @@
 
 class Player extends GameObject implements Subject {
 
+  public life: number = 2;
   observers: Observer[] = [];
-
-  private bullet: Bullet;
-  //private bullets: Array<Bullet> = new Array();
-  private shoot: number = 0;
+  public bullets: Bullet[] = [];
   private behaviour: Behaviour;
 
   constructor(nameElement: string, setX: number, setY: number) {
@@ -27,14 +25,16 @@ class Player extends GameObject implements Subject {
     // Set speed
     //this.speed = 1;
 
-    // Create bullet object
-    this.bullet = new Bullet(this.x, this.y);
-
     // Create Fast object
     this.behaviour = new Fast(this);
 
     // Keyboard event listener
     window.addEventListener("keydown", (e: KeyboardEvent) => this.pressKey(e));
+  }
+
+  // Push Bullet to array
+  public addBullet(setX: number, setY: number) {
+    this.bullets.push(new Bullet(setX, setY));
   }
 
   // Push observers to array
@@ -45,7 +45,7 @@ class Player extends GameObject implements Subject {
   // Test message of observer pattern
   public strongerPlayer(): void {
     for (let o of this.observers) {
-      o.notify("Player is eating food and is stronger now. Zombies are more afraid of the player.");
+      o.notify("Player is eating food and is stronger now. Zombies are more afraid of the player and shrink");
     }
   }
 
@@ -64,32 +64,35 @@ class Player extends GameObject implements Subject {
         this.x += this.speed;
         break;
       case 32: // Space bar
-        this.shoot = 1;
+        this.addBullet(this.x, this.y);
         break;
     }
   }
 
+  public displayLives() {
+    document.getElementById('life').innerHTML = "Lives: " + this.life;
+  }
+
   public update(): void {
-    //console.log(this.x);
-    this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
-    this.objectElement.style.height = this.height + "px";
-    this.objectElement.style.width = this.width + "px";
+    this.draw();
+    this.displayLives();
 
     if (this.x == window.innerWidth - this.width) {
 
     }
 
-    if (this.shoot == 1) {
-      //console.log("Shoot!");
-      this.bullet.update();
+    for (let bullet of this.bullets) {
+      bullet.update();
+
+      if (bullet.getRectangle().right > window.innerWidth) {
+        // Remove element and object from array
+        bullet.remove();
+        let index = this.bullets.indexOf(bullet);
+        this.bullets.splice(index, 1);
+      }
     }
 
     // Update fast speed behaviour
     this.behaviour.update();
-  }
-
-  // Rectangle of Player
-  public getRectangle() {
-    return this.objectElement.getBoundingClientRect();
   }
 }
