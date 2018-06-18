@@ -1,5 +1,6 @@
 class Util {
 
+  // Static method to check collision between objects
   public static checkCollision(a: ClientRect, b: ClientRect): boolean {
       return (a.left <= b.right &&
           b.left <= a.right &&

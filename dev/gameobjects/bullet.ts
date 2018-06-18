@@ -18,7 +18,7 @@ class Bullet extends GameObject {
     this.y = setY;
 
     // Set speed
-    this.speed = 4;
+    this.speed = 10;
   }
 
   public update() {

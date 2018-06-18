@@ -3,9 +3,10 @@
 class Player extends GameObject implements Subject {
 
   public life: number = 2;
-  observers: Observer[] = [];
-  public bullets: Bullet[] = [];
   private behaviour: Behaviour;
+
+  public observers: Observer[] = [];
+  public bullets: Bullet[] = [];
 
   constructor(nameElement: string, setX: number, setY: number) {
     super();
@@ -21,9 +22,6 @@ class Player extends GameObject implements Subject {
     // Set height and width
     this.height = 50;
     this.width = 50;
-
-    // Set speed
-    //this.speed = 1;
 
     // Create Fast object
     this.behaviour = new Fast(this);
@@ -42,7 +40,7 @@ class Player extends GameObject implements Subject {
     this.observers.push(o);
   }
 
-  // Test message of observer pattern
+  // Notify observers
   public strongerPlayer(): void {
     for (let o of this.observers) {
       o.notify("Player is eating food and is stronger now. Zombies are more afraid of the player and shrink");
@@ -69,6 +67,7 @@ class Player extends GameObject implements Subject {
     }
   }
 
+  // Lives of player on screen
   public displayLives() {
     document.getElementById('life').innerHTML = "Lives: " + this.life;
   }
@@ -77,10 +76,7 @@ class Player extends GameObject implements Subject {
     this.draw();
     this.displayLives();
 
-    if (this.x == window.innerWidth - this.width) {
-
-    }
-
+    // Update bullets
     for (let bullet of this.bullets) {
       bullet.update();
 

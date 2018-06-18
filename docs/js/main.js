@@ -84,14 +84,14 @@ var Game = (function () {
                     this.player1.y = 100;
                 }
             }
-            if (this.player1.life == 0) {
-                this.gameOver();
-            }
-            if (this.player1.life < 0) {
-                this.player1.life = 0;
-            }
-            document.getElementById('zombies').innerHTML = "Zombies: " + this.zombieCounter;
         }
+        if (this.player1.life == 0) {
+            this.gameOver();
+        }
+        if (this.player1.life < 0) {
+            this.player1.life = 0;
+        }
+        document.getElementById('zombies').innerHTML = "Zombies: " + this.zombieCounter;
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
     Game.getInstance = function () {
@@ -157,7 +157,7 @@ var Bullet = (function (_super) {
         _this.width = 30;
         _this.x = setX;
         _this.y = setY;
-        _this.speed = 4;
+        _this.speed = 10;
         return _this;
     }
     Bullet.prototype.update = function () {
@@ -237,8 +237,6 @@ var Player = (function (_super) {
     Player.prototype.update = function () {
         this.draw();
         this.displayLives();
-        if (this.x == window.innerWidth - this.width) {
-        }
         for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
             var bullet = _a[_i];
             bullet.update();

@@ -37,7 +37,7 @@ class Game {
       console.log("Player wins!");
     }
 
-    // Update all zombies in array
+    // Update all zombies in array and check collisions
     for (let zombie of this.zombies) {
       zombie.update();
 
@@ -50,7 +50,6 @@ class Game {
         // Player to start position
         this.player1.x = 100;
         this.player1.y = 100;
-        //location.reload();
       }
 
       for (let bullet of this.player1.bullets) {
@@ -73,7 +72,7 @@ class Game {
       }
     }
 
-    // Update all objects in array
+    // Update all objects in array and check collisions
     for (let object of this.objects) {
       object.update();
 
@@ -102,22 +101,21 @@ class Game {
           // Player to start position
           this.player1.x = 100;
           this.player1.y = 100;
-          //location.reload();
         }
       }
-
-      // Game over when lives of player is 0
-      if (this.player1.life == 0) {
-        this.gameOver();
-      }
-
-      // Set lives to 0 when lives are less than 0
-      if (this.player1.life < 0) {
-        this.player1.life = 0;
-      }
-
-      document.getElementById('zombies').innerHTML = "Zombies: " + this.zombieCounter;
     }
+
+    // Game over when lives of player is 0
+    if (this.player1.life == 0) {
+      this.gameOver();
+    }
+
+    // Set lives to 0 when lives are less than 0
+    if (this.player1.life < 0) {
+      this.player1.life = 0;
+    }
+
+    document.getElementById('zombies').innerHTML = "Zombies: " + this.zombieCounter;
 
     requestAnimationFrame(() => this.gameLoop());
   }

@@ -23,14 +23,15 @@ class Zombie extends GameObject implements Observer {
     // Create Slow object
     this.behaviour = new Slow(this);
 
-    // Subscribe Zombie to Player
+    // Subscribe Zombie to Player observer array
     this.player = s;
     this.player.subscribe(this);
   }
 
+  // Get notify from observer
   notify(m: string): void {
     console.log(m);
-    //this.speed = 12;
+
     // Zombies are shrinking
     this.height = 30;
     this.width = 30;
@@ -44,6 +45,7 @@ class Zombie extends GameObject implements Observer {
     this.draw();
   }
 
+  // Reset zombies on top of screen
   public reset(): void {
     this.x = Math.random() * (window.innerWidth - this.width);
     this.y = 0;
