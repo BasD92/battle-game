@@ -62,3 +62,22 @@ rock {
   font-family: Impact, Charcoal, sans-serif;
   font-size: 35px;
 }
+
+button {
+  border-radius:5px;
+  padding:10px;
+  background-color: red;
+  color:white;
+  font-size:22px;
+  cursor: pointer;
+  margin-left: 28pc;
+  margin-top: 15pc;
+}
+
+gameover {
+  text-align: center;
+  color: white;
+  display: block;
+  font-family: Impact, Charcoal, sans-serif;
+  font-size: 35px;
+}
