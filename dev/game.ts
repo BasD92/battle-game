@@ -6,6 +6,7 @@ class Game {
   private player1: Player;
   private zombies: Array<Zombie> = new Array();
   private objects: Array<GameObject> = new Array();
+  private bullets: Array<Bullet> = new Array();
   private i: number = 0;
   private x: number = 0;
   private zombieCounter: number = 3;
@@ -25,16 +26,31 @@ class Game {
       this.objects.push(new Rock());
     }
 
+    // Keyboard event listener
+    window.addEventListener("keydown", (e: KeyboardEvent) => this.pressKey(e));
+
     this.gameLoop();
   }
 
-  private gameLoop() {
+  private gameLoop(): void {
     // Update player
     this.player1.update();
 
     // Check when player wins
     if (this.zombieCounter == 0) {
       console.log("Player wins!");
+    }
+
+    // Update bullets and remove
+    for (let bullet of this.bullets) {
+      bullet.update();
+
+      if (bullet.getRectangle().right > window.innerWidth) {
+        // Remove element and object from array
+        bullet.remove();
+        let index = this.bullets.indexOf(bullet);
+        this.bullets.splice(index, 1);
+      }
     }
 
     // Update all zombies in array and check collisions
@@ -52,7 +68,8 @@ class Game {
         this.player1.y = 100;
       }
 
-      for (let bullet of this.player1.bullets) {
+      // Check collisions with bullets
+      for (let bullet of this.bullets) {
         if (Util.checkCollision(bullet.getRectangle(), zombie.getRectangle())) {
           // Subtract zombieCounter
           this.zombieCounter -= 1;
@@ -60,8 +77,8 @@ class Game {
           // Remove bullet and zombie element and object in array
           bullet.remove();
           zombie.remove();
-          let index = this.player1.bullets.indexOf(bullet);
-          this.player1.bullets.splice(index, 1);
+          let index = this.bullets.indexOf(bullet);
+          this.bullets.splice(index, 1);
           let index2 = this.zombies.indexOf(zombie);
           this.zombies.splice(index2, 1);
         }
@@ -121,11 +138,21 @@ class Game {
   }
 
   // Check if Game object exists
-  public static getInstance() {
+  public static getInstance(): Game {
     if (!Game.instance) {
       Game.instance = new Game();
     }
     return Game.instance;
+  }
+
+  public addBullet(setX: number, setY: number) {
+    this.bullets.push(new Bullet(setX, setY));
+  }
+
+  private pressKey(e: KeyboardEvent): void {
+    if (e.keyCode == 32) {
+      this.addBullet(this.player1.x, this.player1.y);
+    }
   }
 
   public gameOver(): void {

@@ -6,7 +6,6 @@ class Player extends GameObject implements Subject {
   private behaviour: Behaviour;
 
   public observers: Observer[] = [];
-  public bullets: Bullet[] = [];
 
   constructor(nameElement: string, setX: number, setY: number) {
     super();
@@ -28,11 +27,6 @@ class Player extends GameObject implements Subject {
 
     // Keyboard event listener
     window.addEventListener("keydown", (e: KeyboardEvent) => this.pressKey(e));
-  }
-
-  // Push Bullet to array
-  public addBullet(setX: number, setY: number) {
-    this.bullets.push(new Bullet(setX, setY));
   }
 
   // Push observers to array
@@ -61,9 +55,6 @@ class Player extends GameObject implements Subject {
       case 39: // Right arrow
         this.x += this.speed;
         break;
-      case 32: // Space bar
-        this.addBullet(this.x, this.y);
-        break;
     }
   }
 
@@ -75,18 +66,6 @@ class Player extends GameObject implements Subject {
   public update(): void {
     this.draw();
     this.displayLives();
-
-    // Update bullets
-    for (let bullet of this.bullets) {
-      bullet.update();
-
-      if (bullet.getRectangle().right > window.innerWidth) {
-        // Remove element and object from array
-        bullet.remove();
-        let index = this.bullets.indexOf(bullet);
-        this.bullets.splice(index, 1);
-      }
-    }
 
     // Update fast speed behaviour
     this.behaviour.update();

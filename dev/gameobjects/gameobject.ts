@@ -17,14 +17,14 @@ abstract class GameObject {
   }
 
   // Draw object element
-  public draw() {
+  public draw(): void {
     this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     this.objectElement.style.height = this.height + "px";
     this.objectElement.style.width = this.width + "px";
   }
 
   // Get rectangle of object
-  public getRectangle() {
+  public getRectangle(): ClientRect {
     return this.objectElement.getBoundingClientRect();
   }
 

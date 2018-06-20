@@ -21,7 +21,7 @@ class Bullet extends GameObject {
     this.speed = 10;
   }
 
-  public update() {
+  public update(): void {
     this.x += this.speed;
     this.draw();
   }

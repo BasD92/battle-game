@@ -19,8 +19,10 @@ var Fast = (function () {
 }());
 var Game = (function () {
     function Game() {
+        var _this = this;
         this.zombies = new Array();
         this.objects = new Array();
+        this.bullets = new Array();
         this.i = 0;
         this.x = 0;
         this.zombieCounter = 3;
@@ -32,6 +34,7 @@ var Game = (function () {
             this.objects.push(new Food());
             this.objects.push(new Rock());
         }
+        window.addEventListener("keydown", function (e) { return _this.pressKey(e); });
         this.gameLoop();
     }
     Game.prototype.gameLoop = function () {
@@ -40,8 +43,17 @@ var Game = (function () {
         if (this.zombieCounter == 0) {
             console.log("Player wins!");
         }
-        for (var _i = 0, _a = this.zombies; _i < _a.length; _i++) {
-            var zombie = _a[_i];
+        for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
+            var bullet = _a[_i];
+            bullet.update();
+            if (bullet.getRectangle().right > window.innerWidth) {
+                bullet.remove();
+                var index = this.bullets.indexOf(bullet);
+                this.bullets.splice(index, 1);
+            }
+        }
+        for (var _b = 0, _c = this.zombies; _b < _c.length; _b++) {
+            var zombie = _c[_b];
             zombie.update();
             if (Util.checkCollision(this.player1.getRectangle(), zombie.getRectangle())) {
                 console.log("Collission player and zombie!");
@@ -49,14 +61,14 @@ var Game = (function () {
                 this.player1.x = 100;
                 this.player1.y = 100;
             }
-            for (var _b = 0, _c = this.player1.bullets; _b < _c.length; _b++) {
-                var bullet = _c[_b];
+            for (var _d = 0, _e = this.bullets; _d < _e.length; _d++) {
+                var bullet = _e[_d];
                 if (Util.checkCollision(bullet.getRectangle(), zombie.getRectangle())) {
                     this.zombieCounter -= 1;
                     bullet.remove();
                     zombie.remove();
-                    var index = this.player1.bullets.indexOf(bullet);
-                    this.player1.bullets.splice(index, 1);
+                    var index = this.bullets.indexOf(bullet);
+                    this.bullets.splice(index, 1);
                     var index2 = this.zombies.indexOf(zombie);
                     this.zombies.splice(index2, 1);
                 }
@@ -65,8 +77,8 @@ var Game = (function () {
                 zombie.reset();
             }
         }
-        for (var _d = 0, _e = this.objects; _d < _e.length; _d++) {
-            var object = _e[_d];
+        for (var _f = 0, _g = this.objects; _f < _g.length; _f++) {
+            var object = _g[_f];
             object.update();
             if (object instanceof Food) {
                 if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
@@ -99,6 +111,14 @@ var Game = (function () {
             Game.instance = new Game();
         }
         return Game.instance;
+    };
+    Game.prototype.addBullet = function (setX, setY) {
+        this.bullets.push(new Bullet(setX, setY));
+    };
+    Game.prototype.pressKey = function (e) {
+        if (e.keyCode == 32) {
+            this.addBullet(this.player1.x, this.player1.y);
+        }
     };
     Game.prototype.gameOver = function () {
         console.log("Game over!");
@@ -189,7 +209,6 @@ var Player = (function (_super) {
         var _this = _super.call(this) || this;
         _this.life = 2;
         _this.observers = [];
-        _this.bullets = [];
         _this.objectElement = document.createElement(nameElement);
         document.body.appendChild(_this.objectElement);
         _this.x = setX;
@@ -200,9 +219,6 @@ var Player = (function (_super) {
         window.addEventListener("keydown", function (e) { return _this.pressKey(e); });
         return _this;
     }
-    Player.prototype.addBullet = function (setX, setY) {
-        this.bullets.push(new Bullet(setX, setY));
-    };
     Player.prototype.subscribe = function (o) {
         this.observers.push(o);
     };
@@ -226,9 +242,6 @@ var Player = (function (_super) {
             case 39:
                 this.x += this.speed;
                 break;
-            case 32:
-                this.addBullet(this.x, this.y);
-                break;
         }
     };
     Player.prototype.displayLives = function () {
@@ -237,15 +250,6 @@ var Player = (function (_super) {
     Player.prototype.update = function () {
         this.draw();
         this.displayLives();
-        for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
-            var bullet = _a[_i];
-            bullet.update();
-            if (bullet.getRectangle().right > window.innerWidth) {
-                bullet.remove();
-                var index = this.bullets.indexOf(bullet);
-                this.bullets.splice(index, 1);
-            }
-        }
         this.behaviour.update();
     };
     return Player;

@@ -29,7 +29,7 @@ class Zombie extends GameObject implements Observer {
   }
 
   // Get notify from observer
-  notify(m: string): void {
+  public notify(m: string): void {
     console.log(m);
 
     // Zombies are shrinking
