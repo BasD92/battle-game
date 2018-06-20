@@ -2,25 +2,20 @@
 
 class Player extends GameObject implements Subject {
 
-  public life: number = 2;
   private behaviour: Behaviour;
 
   public observers: Observer[] = [];
 
-  constructor(nameElement: string, setX: number, setY: number) {
-    super();
-
-    // Append player element to document
-    this.objectElement = document.createElement(nameElement);
-    document.body.appendChild(this.objectElement);
-
-    // Set x and y axis
-    this.x = setX;
-    this.y = setY;
+  constructor(setX: number, setY: number) {
+    super("player1");
 
     // Set height and width
     this.height = 50;
     this.width = 50;
+
+    // Set x and y axis
+    this.x = setX;
+    this.y = setY;
 
     // Create Fast object
     this.behaviour = new Fast(this);
@@ -32,6 +27,11 @@ class Player extends GameObject implements Subject {
   // Push observers to array
   public subscribe(o: Observer): void {
     this.observers.push(o);
+  }
+
+  public unsubscribe(o: Observer): void {
+    let index = this.observers.indexOf(o);
+    this.observers.splice(index, 1);
   }
 
   // Notify observers
@@ -58,14 +58,8 @@ class Player extends GameObject implements Subject {
     }
   }
 
-  // Lives of player on screen
-  public displayLives() {
-    document.getElementById('life').innerHTML = "Lives: " + this.life;
-  }
-
   public update(): void {
     this.draw();
-    this.displayLives();
 
     // Update fast speed behaviour
     this.behaviour.update();

@@ -1,8 +1,8 @@
 class Slow implements Behaviour {
 
-  zombie: GameObject;
+  zombie: Zombie;
 
-  constructor(z: GameObject) {
+  constructor(z: Zombie) {
     this.zombie = z;
   }
 

@@ -3,11 +3,7 @@
 class Rock extends GameObject {
 
   constructor() {
-    super();
-
-    // Append rock element to document
-    this.objectElement = document.createElement("rock");
-    document.body.appendChild(this.objectElement);
+    super("rock");
 
     // Set height and width
     this.height = 60;

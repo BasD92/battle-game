@@ -31,7 +31,7 @@ Ik heb Singleton toegepast in de Game class. Van de Game class hoeft maar 1 obje
 
 ## Polymorfisme
 
-In de Game class heb ik een array gemaakt waarin verschillende objecten zitten die overerven van GameObject. Door middel van een loop worden 2 Food en Rock objecten "gepusht" in de array. Met een for loop kan ik met de objecten allemaal de update() method aanroepen en collisions controleren. Om specifiek een method aan te roepen per object gebruik ik 'instanceof'.
+In de Game class heb ik een array gemaakt waarin verschillende objecten zitten die overerven van GameObject. Door middel van een loop worden 2 Food en Rock objecten "gepusht" in de array. Met een for loop kan ik met de objecten allemaal de update() method aanroepen en collisions controleren. Om specifiek een method aan te roepen per object gebruik ik 'instanceof'. Hetzelfde geldt voor de Zombies. Er zijn 2 verschillende Zombie classes (SmallZombie en BigZombie) die erven van Zombie. Deze zitten in een array. Met tevens een for loop roep ik voor alle objecten de update() method aan en controleer collisions.
 
 ## Strategy
 
@@ -39,7 +39,7 @@ De player en de zombies hebben een verschillend gedrag qua snelheid, daarom heb 
 
 ## Observer
 
-Het observer pattern heb ik toegepast om een notificatie te sturen naar de zombies als de soldaat heeft gegeten. Hierdoor is de soldaat sterker en krimpen de zombies van de schrik. Op deze manier kunnen alle zombies tegelijk reageren. Player implementeert de Subject interface. Hierdoor heeft Player een lijst met observers en een subscribe() method. Zombie implementeert van de Observer interface. De notify() method is daarom toegevoegd aan Zombie. Ook heeft de Zombie een Subject (player), zodat de zombies zich kunnen 'subscriben' en pushen in de observers array. In de Game class wordt bijgehouden wanneer de soldaat eet en sterker wordt. Als dit het geval is wordt de strongerPlayer() method van het Player object aangeroepen. Deze geeft met de notify() method aan alle observers door dat de soldaat sterker is geworden. Uit angst voor de soldaat krimpen daarom de zombies.
+Het observer pattern heb ik toegepast om een notificatie te sturen naar de zombies als de soldaat heeft gegeten. Hierdoor is de soldaat sterker en krimpen de zombies van de schrik. Op deze manier kunnen alle zombies tegelijk reageren. Player implementeert de Subject interface. Hierdoor heeft Player een lijst met observers, een subscribe() en unsubscribe() method. Zombie implementeert van de Observer interface. De notify() method is daarom toegevoegd aan de Zombie. Ook heeft de Zombie een Subject (Player), zodat de zombies zich kunnen 'subscriben' en pushen in de observers array. Wanneer de kogel de zombie raakt, verdwijnt de zombie uit het spel en dus ook uit de observers array. Dit gebeurt door na een collision de unsubscribe() method te gebruiken. In de Game class wordt bijgehouden wanneer de soldaat eet en sterker wordt. Als dit het geval is wordt de strongerPlayer() method van het Player object aangeroepen. Deze geeft met de notify() method aan alle observers door dat de soldaat sterker is geworden. Uit angst voor de soldaat krimpen daarom de zombies.
 
 ## Gameplay componenten
 

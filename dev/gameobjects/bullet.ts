@@ -3,11 +3,7 @@
 class Bullet extends GameObject {
 
   constructor(setX: number, setY: number) {
-    super();
-
-    // Append bullet element to document
-    this.objectElement = document.createElement("bullet");
-    document.body.appendChild(this.objectElement);
+    super("bullet");
 
     // Set height and width
     this.height = 30;

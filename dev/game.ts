@@ -9,15 +9,17 @@ class Game {
   private bullets: Array<Bullet> = new Array();
   private i: number = 0;
   private x: number = 0;
-  private zombieCounter: number = 3;
+  private zombieCounter: number = 4;
+  private life: number = 2;
 
   // Private constructor Singleton
   private constructor() {
-    this.player1 = new Player("player1", 100, 100);
+    this.player1 = new Player(100, 100);
 
     // Push zombies to array
-    for (this.i = 0; this.i < this.zombieCounter; this.i++) {
-      this.zombies.push(new Zombie(this.player1));
+    for (this.i = 0; this.i < 2; this.i++) {
+      this.zombies.push(new SmallZombie(this.player1));
+      this.zombies.push(new BigZombie(this.player1));
     }
 
     // Push objects to array
@@ -33,8 +35,9 @@ class Game {
   }
 
   private gameLoop(): void {
-    // Update player
+    // Update player and display lives
     this.player1.update();
+    this.displayLives();
 
     // Check when player wins
     if (this.zombieCounter == 0) {
@@ -61,7 +64,7 @@ class Game {
         console.log("Collission player and zombie!");
 
         // Subtract life
-        this.player1.life -= 1;
+        this.life -= 1;
 
         // Player to start position
         this.player1.x = 100;
@@ -81,6 +84,8 @@ class Game {
           this.bullets.splice(index, 1);
           let index2 = this.zombies.indexOf(zombie);
           this.zombies.splice(index2, 1);
+          // Also remove Zombie from obervers array
+          this.player1.unsubscribe(zombie);
         }
       }
 
@@ -99,7 +104,7 @@ class Game {
           this.player1.strongerPlayer();
 
           // Add life
-          this.player1.life += 1;
+          this.life += 1;
 
           // Remove food element from DOM
           object.remove();
@@ -113,7 +118,7 @@ class Game {
       if (object instanceof Rock) {
         if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
           // Subtract life
-          this.player1.life -= 1;
+          this.life -= 1;
 
           // Player to start position
           this.player1.x = 100;
@@ -123,13 +128,13 @@ class Game {
     }
 
     // Game over when lives of player is 0
-    if (this.player1.life == 0) {
+    if (this.life == 0) {
       this.gameOver();
     }
 
     // Set lives to 0 when lives are less than 0
-    if (this.player1.life < 0) {
-      this.player1.life = 0;
+    if (this.life < 0) {
+      this.life = 0;
     }
 
     document.getElementById('zombies').innerHTML = "Zombies: " + this.zombieCounter;
@@ -143,6 +148,10 @@ class Game {
       Game.instance = new Game();
     }
     return Game.instance;
+  }
+
+  public displayLives() {
+    document.getElementById('life').innerHTML = "Lives: " + this.life;
   }
 
   public addBullet(setX: number, setY: number) {

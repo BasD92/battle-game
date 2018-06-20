@@ -25,10 +25,12 @@ var Game = (function () {
         this.bullets = new Array();
         this.i = 0;
         this.x = 0;
-        this.zombieCounter = 3;
-        this.player1 = new Player("player1", 100, 100);
-        for (this.i = 0; this.i < this.zombieCounter; this.i++) {
-            this.zombies.push(new Zombie(this.player1));
+        this.zombieCounter = 4;
+        this.life = 2;
+        this.player1 = new Player(100, 100);
+        for (this.i = 0; this.i < 2; this.i++) {
+            this.zombies.push(new SmallZombie(this.player1));
+            this.zombies.push(new BigZombie(this.player1));
         }
         for (this.x = 0; this.x < 2; this.x++) {
             this.objects.push(new Food());
@@ -40,6 +42,7 @@ var Game = (function () {
     Game.prototype.gameLoop = function () {
         var _this = this;
         this.player1.update();
+        this.displayLives();
         if (this.zombieCounter == 0) {
             console.log("Player wins!");
         }
@@ -57,7 +60,7 @@ var Game = (function () {
             zombie.update();
             if (Util.checkCollision(this.player1.getRectangle(), zombie.getRectangle())) {
                 console.log("Collission player and zombie!");
-                this.player1.life -= 1;
+                this.life -= 1;
                 this.player1.x = 100;
                 this.player1.y = 100;
             }
@@ -71,6 +74,7 @@ var Game = (function () {
                     this.bullets.splice(index, 1);
                     var index2 = this.zombies.indexOf(zombie);
                     this.zombies.splice(index2, 1);
+                    this.player1.unsubscribe(zombie);
                 }
             }
             if (zombie.getRectangle().bottom > window.innerHeight - 5) {
@@ -83,7 +87,7 @@ var Game = (function () {
             if (object instanceof Food) {
                 if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
                     this.player1.strongerPlayer();
-                    this.player1.life += 1;
+                    this.life += 1;
                     object.remove();
                     var index = this.objects.indexOf(object);
                     this.objects.splice(index, 1);
@@ -91,17 +95,17 @@ var Game = (function () {
             }
             if (object instanceof Rock) {
                 if (Util.checkCollision(this.player1.getRectangle(), object.getRectangle())) {
-                    this.player1.life -= 1;
+                    this.life -= 1;
                     this.player1.x = 100;
                     this.player1.y = 100;
                 }
             }
         }
-        if (this.player1.life == 0) {
+        if (this.life == 0) {
             this.gameOver();
         }
-        if (this.player1.life < 0) {
-            this.player1.life = 0;
+        if (this.life < 0) {
+            this.life = 0;
         }
         document.getElementById('zombies').innerHTML = "Zombies: " + this.zombieCounter;
         requestAnimationFrame(function () { return _this.gameLoop(); });
@@ -111,6 +115,9 @@ var Game = (function () {
             Game.instance = new Game();
         }
         return Game.instance;
+    };
+    Game.prototype.displayLives = function () {
+        document.getElementById('life').innerHTML = "Lives: " + this.life;
     };
     Game.prototype.addBullet = function (setX, setY) {
         this.bullets.push(new Bullet(setX, setY));
@@ -149,8 +156,9 @@ var Util = (function () {
     return Util;
 }());
 var GameObject = (function () {
-    function GameObject() {
-        this.speed = 0;
+    function GameObject(nameElement) {
+        this.objectElement = document.createElement(nameElement);
+        document.body.appendChild(this.objectElement);
     }
     GameObject.prototype.update = function () {
     };
@@ -170,9 +178,7 @@ var GameObject = (function () {
 var Bullet = (function (_super) {
     __extends(Bullet, _super);
     function Bullet(setX, setY) {
-        var _this = _super.call(this) || this;
-        _this.objectElement = document.createElement("bullet");
-        document.body.appendChild(_this.objectElement);
+        var _this = _super.call(this, "bullet") || this;
         _this.height = 30;
         _this.width = 30;
         _this.x = setX;
@@ -189,9 +195,7 @@ var Bullet = (function (_super) {
 var Food = (function (_super) {
     __extends(Food, _super);
     function Food() {
-        var _this = _super.call(this) || this;
-        _this.objectElement = document.createElement("food");
-        document.body.appendChild(_this.objectElement);
+        var _this = _super.call(this, "food") || this;
         _this.height = 50;
         _this.width = 50;
         _this.x = Math.random() * (window.innerWidth - _this.width);
@@ -205,22 +209,23 @@ var Food = (function (_super) {
 }(GameObject));
 var Player = (function (_super) {
     __extends(Player, _super);
-    function Player(nameElement, setX, setY) {
-        var _this = _super.call(this) || this;
-        _this.life = 2;
+    function Player(setX, setY) {
+        var _this = _super.call(this, "player1") || this;
         _this.observers = [];
-        _this.objectElement = document.createElement(nameElement);
-        document.body.appendChild(_this.objectElement);
-        _this.x = setX;
-        _this.y = setY;
         _this.height = 50;
         _this.width = 50;
+        _this.x = setX;
+        _this.y = setY;
         _this.behaviour = new Fast(_this);
         window.addEventListener("keydown", function (e) { return _this.pressKey(e); });
         return _this;
     }
     Player.prototype.subscribe = function (o) {
         this.observers.push(o);
+    };
+    Player.prototype.unsubscribe = function (o) {
+        var index = this.observers.indexOf(o);
+        this.observers.splice(index, 1);
     };
     Player.prototype.strongerPlayer = function () {
         for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
@@ -244,12 +249,8 @@ var Player = (function (_super) {
                 break;
         }
     };
-    Player.prototype.displayLives = function () {
-        document.getElementById('life').innerHTML = "Lives: " + this.life;
-    };
     Player.prototype.update = function () {
         this.draw();
-        this.displayLives();
         this.behaviour.update();
     };
     return Player;
@@ -257,9 +258,7 @@ var Player = (function (_super) {
 var Rock = (function (_super) {
     __extends(Rock, _super);
     function Rock() {
-        var _this = _super.call(this) || this;
-        _this.objectElement = document.createElement("rock");
-        document.body.appendChild(_this.objectElement);
+        var _this = _super.call(this, "rock") || this;
         _this.height = 60;
         _this.width = 60;
         _this.x = Math.random() * (window.innerWidth - _this.width);
@@ -271,12 +270,59 @@ var Rock = (function (_super) {
     };
     return Rock;
 }(GameObject));
-var Zombie = (function (_super) {
-    __extends(Zombie, _super);
-    function Zombie(s) {
-        var _this = _super.call(this) || this;
-        _this.objectElement = document.createElement("zombie");
-        document.body.appendChild(_this.objectElement);
+var Zombie = (function () {
+    function Zombie(nameElement) {
+        this.objectElement = document.createElement(nameElement);
+        document.body.appendChild(this.objectElement);
+    }
+    Zombie.prototype.update = function () {
+    };
+    Zombie.prototype.notify = function (m) {
+        console.log(m);
+        this.height -= 10;
+        this.width -= 10;
+    };
+    Zombie.prototype.draw = function () {
+        this.objectElement.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+        this.objectElement.style.height = this.height + "px";
+        this.objectElement.style.width = this.width + "px";
+    };
+    Zombie.prototype.getRectangle = function () {
+        return this.objectElement.getBoundingClientRect();
+    };
+    Zombie.prototype.reset = function () {
+        this.x = Math.random() * (window.innerWidth - this.width);
+        this.y = 0;
+    };
+    Zombie.prototype.remove = function () {
+        this.objectElement.remove();
+    };
+    return Zombie;
+}());
+var BigZombie = (function (_super) {
+    __extends(BigZombie, _super);
+    function BigZombie(s) {
+        var _this = _super.call(this, "bigZombie") || this;
+        _this.height = 70;
+        _this.width = 70;
+        _this.x = Math.random() * (window.innerWidth - _this.width);
+        _this.y = Math.random() * (window.innerHeight - _this.height);
+        _this.behaviour = new Slow(_this);
+        _this.player = s;
+        _this.player.subscribe(_this);
+        return _this;
+    }
+    BigZombie.prototype.update = function () {
+        this.behaviour.update();
+        this.y += this.speed;
+        this.draw();
+    };
+    return BigZombie;
+}(Zombie));
+var SmallZombie = (function (_super) {
+    __extends(SmallZombie, _super);
+    function SmallZombie(s) {
+        var _this = _super.call(this, "smallzombie") || this;
         _this.height = 50;
         _this.width = 50;
         _this.x = Math.random() * (window.innerWidth - _this.width);
@@ -286,20 +332,11 @@ var Zombie = (function (_super) {
         _this.player.subscribe(_this);
         return _this;
     }
-    Zombie.prototype.notify = function (m) {
-        console.log(m);
-        this.height = 30;
-        this.width = 30;
-    };
-    Zombie.prototype.update = function () {
+    SmallZombie.prototype.update = function () {
         this.behaviour.update();
         this.y += this.speed;
         this.draw();
     };
-    Zombie.prototype.reset = function () {
-        this.x = Math.random() * (window.innerWidth - this.width);
-        this.y = 0;
-    };
-    return Zombie;
-}(GameObject));
+    return SmallZombie;
+}(Zombie));
 //# sourceMappingURL=main.js.map

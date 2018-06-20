@@ -3,11 +3,7 @@
 class Food extends GameObject {
 
   constructor() {
-    super();
-
-    // Append food element to document
-    this.objectElement = document.createElement("food");
-    document.body.appendChild(this.objectElement);
+    super("food");
 
     // Set height and width
     this.height = 50;
