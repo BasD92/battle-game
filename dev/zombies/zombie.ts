@@ -1,6 +1,6 @@
 class Zombie implements Observer {
 
-  protected behaviour: Behaviour;
+  //protected behaviour: Behaviour;
   protected player: Subject;
 
   protected objectElement: HTMLElement;
@@ -9,11 +9,15 @@ class Zombie implements Observer {
   public height: number;
   public width: number;
   public speed: number;
+  public container: HTMLElement;
 
   constructor(nameElement:string) {
     // Append element to document
     this.objectElement = document.createElement(nameElement);
-    document.body.appendChild(this.objectElement);
+    this.container = document.getElementById('container');
+    this.container.appendChild(this.objectElement);
+
+    this.speed = 2;
   }
 
   // Update method (Override in child)

@@ -13,18 +13,12 @@ class SmallZombie extends Zombie {
     this.x = Math.random() * (window.innerWidth - this.width);
     this.y = Math.random() * (window.innerHeight - this.height);
 
-    // Create Slow object
-    this.behaviour = new Slow(this);
-
     // Subscribe Zombie to Player observer array
     this.player = s;
     this.player.subscribe(this);
   }
 
   public update(): void {
-    // Update slow speed behaviour
-    this.behaviour.update();
-
     this.y += this.speed;
     this.draw();
   }

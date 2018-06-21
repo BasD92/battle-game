@@ -6,11 +6,14 @@ class GameObject {
   public height: number;
   public width: number;
   public speed: number;
+  public container: HTMLElement;
+  public behaviour: Behaviour;
 
   constructor(nameElement:string) {
-    // Append element to document
+    // Append element to container
     this.objectElement = document.createElement(nameElement);
-    document.body.appendChild(this.objectElement);
+    this.container = document.getElementById('container');
+    this.container.appendChild(this.objectElement);
   }
 
   // Update method (Override in child)

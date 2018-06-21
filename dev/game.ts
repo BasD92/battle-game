@@ -14,7 +14,7 @@ class Game {
 
   // Private constructor Singleton
   private constructor() {
-    this.player1 = new Player(100, 100);
+    this.player1 = new Player(100, 200);
 
     // Push zombies to array
     for (this.i = 0; this.i < 2; this.i++) {
@@ -103,6 +103,9 @@ class Game {
           // Notify all zombies when player eats food and is stronger.
           this.player1.strongerPlayer();
 
+          // Eating behaviour
+          this.player1.behaviour = new Eating(this.player1);
+
           // Add life
           this.life += 1;
 
@@ -120,9 +123,8 @@ class Game {
           // Subtract life
           this.life -= 1;
 
-          // Player to start position
-          this.player1.x = 100;
-          this.player1.y = 100;
+          // Sleeping behaviour (Soldier is dizzy and sleep for a second)
+          this.player1.behaviour = new Sleeping(this.player1);
         }
       }
     }
