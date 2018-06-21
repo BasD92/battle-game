@@ -296,7 +296,7 @@ var Player = (function (_super) {
     Player.prototype.strongerPlayer = function () {
         for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
             var o = _a[_i];
-            o.notify("Player is eating food and is stronger now. Zombies are more afraid of the player and shrink");
+            o.notify();
         }
     };
     Player.prototype.pressKey = function (e) {
@@ -332,8 +332,7 @@ var Zombie = (function () {
     }
     Zombie.prototype.update = function () {
     };
-    Zombie.prototype.notify = function (m) {
-        console.log(m);
+    Zombie.prototype.notify = function () {
         this.height -= 10;
         this.width -= 10;
     };

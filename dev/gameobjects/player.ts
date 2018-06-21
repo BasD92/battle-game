@@ -38,7 +38,7 @@ class Player extends GameObject implements Subject {
   // Notify observers
   public strongerPlayer(): void {
     for (let o of this.observers) {
-      o.notify("Player is eating food and is stronger now. Zombies are more afraid of the player and shrink");
+      o.notify();
     }
   }
 

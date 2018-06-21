@@ -1,4 +1,4 @@
 interface Observer {
 
-  notify(m: string): void;
+  notify(): void;
 }

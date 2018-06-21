@@ -26,9 +26,7 @@ class Zombie implements Observer {
   }
 
   // Get notify from observer
-  public notify(m: string): void {
-    console.log(m);
-
+  public notify(): void {
     // All zombies are shrinking
     this.height -= 10;
     this.width -= 10;
