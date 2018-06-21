@@ -35,7 +35,7 @@ In de Game class heb ik een array gemaakt waarin verschillende objecten zitten d
 
 ## Strategy
 
-De player en de zombies hebben een verschillend gedrag qua snelheid, daarom heb ik hier een Strategy Pattern toegepast. De classes Fast en Slow implementeren de Behaviour interface. Allebei de classes hebben een GameObject en de snelheid is in de update() method gezet. In de Player en Zombie class zijn in de constructor nieuwe objecten aangemaakt van het type Behaviour. In de update() methods van de Player en Zombie class kunnen hierdoor de update() methods van beide classes (Fast en Slow) aangeroepen worden. De Player is snel en gebruikt Fast. De zombie is langzamer en gebruikt Slow.
+De Player heeft verschillend gedrag, namelijk Running, Eating en Sleeping. Alle gedrag classes implementeren van de Behaviour interface. Het standaard gedrag van de Player is Running, maar door bepaalde situaties, zoals het pakken van kersen en botsen tegen rotsen, verandert het gedrag. Bij het pakken van kersen wordt de Player groter en sneller voor 5 seconden. Als de Player tegen een rots aanbotst, dan wordt de player terug op de startpositie gezet en heeft 1 seconden slaap nodig door de duizeligheid. Door gedrag in verschillende classes te zetten is de code in Player zelf meer overzichtelijk en is het eenvoudiger om gedrag erbij te voegen.
 
 ## Observer
 

@@ -17,10 +17,14 @@ var Eating = (function () {
         if (this.counter < 300) {
             console.log("Player eet en snelheid gaat voor 5 seconden omhoog");
             this.player.speed = 18;
+            this.player.height = 70;
+            this.player.width = 70;
             this.counter++;
         }
         else {
             this.player.speed = 12;
+            this.player.height = 50;
+            this.player.width = 50;
             this.player.behaviour = new Running(this.player);
         }
     };
@@ -183,16 +187,6 @@ var Running = (function () {
         }
     };
     return Running;
-}());
-var Scaring = (function () {
-    function Scaring(z) {
-        this.zombie = z;
-    }
-    Scaring.prototype.update = function () {
-    };
-    Scaring.prototype.pressKey = function () {
-    };
-    return Scaring;
 }());
 var Sleeping = (function () {
     function Sleeping(p) {

@@ -13,10 +13,18 @@ class Eating implements Behaviour {
       console.log("Player eet en snelheid gaat voor 5 seconden omhoog")
       // Improve speed
       this.player.speed = 18;
+
+      // Increase height and width
+      this.player.height = 70;
+      this.player.width = 70;
+
       this.counter++;
     }
     else {
+      // Back to normal speed and size
       this.player.speed = 12;
+      this.player.height = 50;
+      this.player.width = 50;
       this.player.behaviour = new Running(this.player);
     }
   }
