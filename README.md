@@ -14,7 +14,7 @@ Via deze repository kan je het project clonen. De clone doe je in de root map va
 
 ## Klassendiagram
 
-![UML](battle-game-uml.png)
+![UML](battle-game-uml.jpg)
 
 ## Pull request
 
