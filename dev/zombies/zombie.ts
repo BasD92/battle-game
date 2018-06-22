@@ -1,9 +1,8 @@
 class Zombie implements Observer {
 
-  //protected behaviour: Behaviour;
-  protected player: Subject;
+  public player: Subject;
 
-  protected objectElement: HTMLElement;
+  public objectElement: HTMLElement;
   public x: number;
   public y: number;
   public height: number;
