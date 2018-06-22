@@ -2,7 +2,7 @@
 
 ## Inleiding
 
-De player is een kleine soldaat die je kan besturen met de pijltjestoetsen. De soldaat kan ook schieten. Met een druk op de spatietoets kan de soldaat schieten. Het is de bedoeling om de zombies in het spel neer te schieten. Als alle zombies zijn neergeschoten, heeft de player van het spel gewonnen. Echter heeft de soldaat maar 2 levens. Door eten (kersen) te pakken, kan daar een leven bijkomen. De zombies schrikken als de soldaat eet en sterker is geworden. Hierdoor krimpen de zombies. Ze zijn daardoor moeilijker te raken. Als de soldaat in botsing komt met een zombie of een rots, dan gaat er een leven van af. Als de soldaat geen levens meer heeft, dan is het game over.
+De player is een kleine soldaat die je kan besturen met de pijltjestoetsen. De soldaat kan ook schieten. Met een druk op de spatietoets kan de soldaat schieten. Het is de bedoeling om de zombies in het spel neer te schieten. Als alle zombies zijn neergeschoten, heeft de player van het spel gewonnen. Echter heeft de soldaat maar 2 levens. Door eten (kersen) te pakken, kan daar een leven bijkomen. Ook wordt de soldaat krachtiger. De soldaat groeit en is sneller voor 5 seconden. De zombies schrikken als de soldaat eet en sterker is geworden. Hierdoor krimpen de zombies. Ze zijn daardoor moeilijker te raken. Als de soldaat in botsing komt met een zombie of een rots, dan gaat er een leven van af. Als de soldaat geen levens meer heeft, dan is het game over.
 
 ## Speelbare game
 
@@ -10,11 +10,13 @@ https://basd92.github.io/battle-game/
 
 ## Installatie
 
-Via deze repository kan je het project clonen. De clone doe je in de root map van een lokale server, zoals XAMPP of MAMP. Het editen kan in Visual Studio Code. Als het project daar is geopend kan je "Ctrl+Shift+B" intoetsen en de "watch-mode" aanzetten. Hierdoor compileren de Typescript bestanden automatisch naar ES5 (JavaScript) bij een wijziging in de code. Door het compileren is de code leesbaar voor de browser. De game kan je runnen en spelen door deze link aan te houden: http://localhost/battle-game/docs/index.html
+Via deze repository kan je het project clonen. De clone doe je in de root map van een lokale server, zoals XAMPP of MAMP. Het editen kan in Visual Studio Code. Als het project daar is geopend kan je "Ctrl+Shift+B" intoetsen en de "watch-mode" aanzetten. Hierdoor compileren de Typescript bestanden automatisch naar ES5 (JavaScript) bij een wijziging in de code. Door het compileren is de code leesbaar voor de browser. In de 'dev' map staan de TypeScript bestanden die je kan bewerken. In de 'docs' map staan de gecompileerde JavaScript bestanden, CSS bestanden en index.html.De game kan je runnen en spelen door deze link aan te houden: http://localhost/battle-game/docs/index.html
 
 ## Klassendiagram
 
 ![UML](Battle-game-uml.jpg)
+
+Alleen de belangrijkste properties en methods zijn gebruikt om het overzichtelijk te houden en de technische werking duidelijk te verbeelden. De 'extend' verbindingen zijn rood om duidelijk onderscheid te maken met de andere verbindingen.
 
 ## Pull request
 
@@ -80,7 +82,7 @@ for (let object of this.objects) {
 
 ## Observer
 
-Het observer pattern heb ik toegepast om een notificatie te sturen naar de zombies als de soldaat heeft gegeten. Hierdoor is de soldaat sterker en krimpen de zombies van de schrik. Op deze manier kunnen alle zombies tegelijk reageren. Player implementeert de Subject interface. Hierdoor heeft Player een lijst met observers, een subscribe() en unsubscribe() method. Zombie implementeert van de Observer interface. De notify() method is daarom toegevoegd aan de Zombie. Ook heeft de Zombie een Subject (Player), zodat de zombies zich kunnen 'subscriben' en pushen in de observers array. Wanneer de kogel de zombie raakt, verdwijnt de zombie uit het spel en dus ook uit de observers array. Dit gebeurt door na een collision de unsubscribe() method te gebruiken. In de Game class wordt bijgehouden wanneer de soldaat eet en sterker wordt. Als dit het geval is wordt de strongerPlayer() method van het Player object aangeroepen. Deze geeft met de notify() method aan alle observers door dat de soldaat sterker is geworden. Uit angst voor de soldaat krimpen daarom de zombies.
+Het observer pattern heb ik toegepast om een notificatie te sturen naar de zombies als de soldaat heeft gegeten. Hierdoor is de soldaat sterker en krimpen de zombies van de schrik. Op deze manier kunnen alle zombies tegelijk reageren. Player implementeert de Subject interface. Hierdoor heeft Player een lijst met observers, een subscribe() en unsubscribe() method. Zombie implementeert van de Observer interface. De notify() method is daarom toegevoegd aan de Zombie. Ook heeft de Zombie een Player, zodat de zombies zich kunnen 'subscriben' en pushen in de observers array. Wanneer de kogel de zombie raakt, verdwijnt de zombie uit het spel en dus ook uit de observers array. Dit gebeurt door na een collision de unsubscribe() method te gebruiken. In de Game class wordt bijgehouden wanneer de soldaat eet en sterker wordt. Als dit het geval is wordt de strongerPlayer() method van het Player object aangeroepen. Deze geeft met de notify() method aan alle observers door dat de soldaat sterker is geworden. Uit angst voor de soldaat krimpen daarom de zombies.
 
 ```
 public notify(): void {
