@@ -24,7 +24,7 @@ class Zombie implements Observer {
 
   }
 
-  // Get notify from observer
+  // Notification to all zombies
   public notify(): void {
     // All zombies are shrinking
     this.height -= 10;
