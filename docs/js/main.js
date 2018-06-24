@@ -12,10 +12,11 @@ var Eating = (function () {
     function Eating(p) {
         this.counter = 0;
         this.player = p;
+        this.eatSound = document.getElementsByTagName("audio")[0];
     }
     Eating.prototype.update = function () {
         if (this.counter < 300) {
-            console.log("Player eet en snelheid gaat voor 5 seconden omhoog");
+            this.eatSound.play();
             this.player.speed = 18;
             this.player.height = 70;
             this.player.width = 70;
@@ -73,12 +74,13 @@ var Game = (function () {
         this.player1.update();
         this.displayLives();
         if (this.zombieCounter == 0) {
-            console.log("Player wins!");
+            this.player1.speed = 0;
+            document.getElementById('win').innerHTML = "You won!";
         }
         for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
             var bullet = _a[_i];
             bullet.update();
-            if (bullet.getRectangle().right > window.innerWidth) {
+            if (bullet.getRectangle().right > window.innerWidth - 5) {
                 bullet.remove();
                 var index = this.bullets.indexOf(bullet);
                 this.bullets.splice(index, 1);
@@ -87,8 +89,10 @@ var Game = (function () {
         for (var _b = 0, _c = this.zombies; _b < _c.length; _b++) {
             var zombie = _c[_b];
             zombie.update();
+            if (this.life == 0) {
+                zombie.remove();
+            }
             if (Util.checkCollision(this.player1.getRectangle(), zombie.getRectangle())) {
-                console.log("Collission player and zombie!");
                 this.life -= 1;
                 this.player1.x = 100;
                 this.player1.y = 200;
@@ -131,7 +135,8 @@ var Game = (function () {
             }
         }
         if (this.life == 0) {
-            this.gameOver();
+            this.player1.speed = 0;
+            document.getElementById('lose').innerHTML = "Game over";
         }
         if (this.life < 0) {
             this.life = 0;
@@ -155,9 +160,6 @@ var Game = (function () {
         if (e.keyCode == 32) {
             this.addBullet(this.player1.x, this.player1.y);
         }
-    };
-    Game.prototype.gameOver = function () {
-        console.log("Game over!");
     };
     return Game;
 }());
@@ -192,10 +194,11 @@ var Sleeping = (function () {
     function Sleeping(p) {
         this.sleepCounter = 0;
         this.player = p;
+        this.sleepSound = document.getElementsByTagName("audio")[1];
     }
     Sleeping.prototype.update = function () {
         if (this.sleepCounter < 60) {
-            console.log('Player slaapt!');
+            this.sleepSound.play();
             this.player.x = 100;
             this.player.y = 200;
             this.sleepCounter++;
@@ -333,7 +336,6 @@ var Zombie = (function () {
     Zombie.prototype.update = function () {
     };
     Zombie.prototype.notify = function () {
-        console.log("Notification to zombies!");
         this.height -= 10;
         this.width -= 10;
     };

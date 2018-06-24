@@ -41,14 +41,15 @@ class Game {
 
     // Check when player wins
     if (this.zombieCounter == 0) {
-      console.log("Player wins!");
+      this.player1.speed = 0;
+      document.getElementById('win').innerHTML = "You won!";
     }
 
     // Update bullets and remove
     for (let bullet of this.bullets) {
       bullet.update();
 
-      if (bullet.getRectangle().right > window.innerWidth) {
+      if (bullet.getRectangle().right > window.innerWidth - 5) {
         // Remove element and object from array
         bullet.remove();
         let index = this.bullets.indexOf(bullet);
@@ -60,9 +61,12 @@ class Game {
     for (let zombie of this.zombies) {
       zombie.update();
 
-      if (Util.checkCollision(this.player1.getRectangle(), zombie.getRectangle())) {
-        console.log("Collission player and zombie!");
+      // Remove all zombies when game is over
+      if (this.life == 0) {
+        zombie.remove();
+      }
 
+      if (Util.checkCollision(this.player1.getRectangle(), zombie.getRectangle())) {
         // Subtract life
         this.life -= 1;
 
@@ -131,7 +135,8 @@ class Game {
 
     // Game over when lives of player is 0
     if (this.life == 0) {
-      this.gameOver();
+      this.player1.speed = 0;
+      document.getElementById('lose').innerHTML = "Game over";
     }
 
     // Set lives to 0 when lives are less than 0
@@ -164,9 +169,5 @@ class Game {
     if (e.keyCode == 32) {
       this.addBullet(this.player1.x, this.player1.y);
     }
-  }
-
-  public gameOver(): void {
-    console.log("Game over!");
   }
 }

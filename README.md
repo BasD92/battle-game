@@ -103,3 +103,6 @@ for (let bullet of this.bullets) {
 
 ## Gameplay componenten
 
+- De game heeft interactief geluid. Als de soldaat eet, dan hoor je een "eat sound effect". Als de soldaat tegen een rots aanbotst, wordt de soldaat duizelig en heeft even slaap nodig. Zodra dit het geval is hoor je een snurk geluid.
+- De game heb ik visueel aantrekkelijk gemaakt. De achtergrond en verschillende elementen in de game heb ik op elkaar aan laten sluiten.
+

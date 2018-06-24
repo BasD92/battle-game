@@ -69,3 +69,19 @@ rock {
   font-family: Impact, Charcoal, sans-serif;
   font-size: 35px;
 }
+
+#win {
+  color: white;
+  display: block;
+  text-align: center;
+  font-family: Impact, Charcoal, sans-serif;
+  font-size: 50px;
+}
+
+#lose {
+  color: white;
+  display: block;
+  text-align: center;
+  font-family: Impact, Charcoal, sans-serif;
+  font-size: 50px;
+}
