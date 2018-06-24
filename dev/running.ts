@@ -1,16 +1,16 @@
 class Running implements Behaviour {
 
-  player: GameObject;
+  public player: GameObject;
 
   constructor(p: GameObject) {
     this.player = p;
   }
 
-  update(): void {
+  public update(): void {
 
   }
 
-  pressKey(e: KeyboardEvent): void {
+  public pressKey(e: KeyboardEvent): void {
     switch (e.keyCode) {
       case 38: // Up arrow
         this.player.y -= this.player.speed;

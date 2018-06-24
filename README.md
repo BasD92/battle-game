@@ -10,7 +10,7 @@ https://basd92.github.io/battle-game/
 
 ## Installatie
 
-Via deze repository kan je het project clonen. De clone doe je in de root map van een lokale server, zoals XAMPP of MAMP. Het editen kan in Visual Studio Code. Als het project daar is geopend kan je "Ctrl+Shift+B" intoetsen en de "watch-mode" aanzetten. Hierdoor compileren de Typescript bestanden automatisch naar ES5 (JavaScript) bij een wijziging in de code. Door het compileren is de code leesbaar voor de browser. In de 'dev' map staan de TypeScript bestanden die je kan bewerken. In de 'docs' map staan de gecompileerde JavaScript bestanden, CSS bestanden en index.html.De game kan je runnen en spelen door deze link aan te houden: http://localhost/battle-game/docs/index.html
+Via deze repository kan je het project clonen. De clone doe je in de root map van een lokale server, zoals XAMPP of MAMP. Het editen kan in Visual Studio Code. Als het project daar is geopend kan je "Ctrl+Shift+B" intoetsen en de "watch-mode" aanzetten. Hierdoor compileren de Typescript bestanden automatisch naar ES5 (JavaScript) bij een wijziging in de code. Door het compileren is de code leesbaar voor de browser. In de 'dev' map staan de TypeScript bestanden die je kan bewerken. In de 'docs' map staan de gecompileerde JavaScript bestanden, CSS bestanden en index.html. De game kan je runnen en spelen door deze link aan te houden: http://localhost/battle-game/docs/index.html
 
 ## Klassendiagram
 
@@ -49,6 +49,9 @@ public static getInstance(): Game {
 In de Game class heb ik een array gemaakt waarin verschillende objecten zitten die overerven van GameObject. Door middel van een loop worden 2 Food en Rock objecten "gepusht" in de array. Met een for loop kan ik met de objecten allemaal de update() method (en andere methods) aanroepen en collisions controleren. Om specifiek een method aan te roepen per object gebruik ik 'instanceof'. Hetzelfde geldt voor de Zombies. Er zijn 2 verschillende Zombie classes (SmallZombie en BigZombie) die erven van Zombie. Deze zitten in een array. Met tevens een for loop roep ik voor alle objecten de update() method (en andere methods) aan en controleer collisions.
 
 ```
+private zombies: Array<Zombie> = new Array();
+private objects: Array<GameObject> = new Array();
+
 for (this.i = 0; this.i < 2; this.i++) {
   this.zombies.push(new SmallZombie(this.player1));
   this.zombies.push(new BigZombie(this.player1));

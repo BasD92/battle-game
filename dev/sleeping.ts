@@ -1,13 +1,13 @@
 class Sleeping implements Behaviour {
 
-  player: GameObject;
+  public player: GameObject;
   private sleepCounter: number = 0;
 
   constructor(p: GameObject) {
     this.player = p;
   }
 
-  update(): void {
+  public update(): void {
     if (this.sleepCounter < 60) {
       console.log('Player slaapt!');
       // Player to start position and sleeps for a second
@@ -20,7 +20,7 @@ class Sleeping implements Behaviour {
     }
   }
 
-  pressKey(): void {
+  public pressKey(): void {
 
   }
 }

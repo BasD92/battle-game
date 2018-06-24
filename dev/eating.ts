@@ -1,13 +1,13 @@
 class Eating implements Behaviour {
 
-  player: GameObject;
+  public player: GameObject;
   private counter: number = 0;
 
   constructor(p: GameObject) {
     this.player = p;
   }
 
-  update(): void {
+  public update(): void {
     // Improve speed of player for 5 seconds
     if (this.counter < 300) {
       console.log("Player eet en snelheid gaat voor 5 seconden omhoog")
@@ -29,7 +29,7 @@ class Eating implements Behaviour {
     }
   }
 
-  pressKey(e: KeyboardEvent): void {
+  public pressKey(e: KeyboardEvent): void {
     switch (e.keyCode) {
       case 38: // Up arrow
         this.player.y -= this.player.speed;

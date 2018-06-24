@@ -91,7 +91,7 @@ var Game = (function () {
                 console.log("Collission player and zombie!");
                 this.life -= 1;
                 this.player1.x = 100;
-                this.player1.y = 100;
+                this.player1.y = 200;
             }
             for (var _d = 0, _e = this.bullets; _d < _e.length; _d++) {
                 var bullet = _e[_d];
@@ -333,6 +333,7 @@ var Zombie = (function () {
     Zombie.prototype.update = function () {
     };
     Zombie.prototype.notify = function () {
+        console.log("Notification to zombies!");
         this.height -= 10;
         this.width -= 10;
     };

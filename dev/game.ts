@@ -68,7 +68,7 @@ class Game {
 
         // Player to start position
         this.player1.x = 100;
-        this.player1.y = 100;
+        this.player1.y = 200;
       }
 
       // Check collisions with bullets
@@ -123,7 +123,7 @@ class Game {
           // Subtract life
           this.life -= 1;
 
-          // Sleeping behaviour (Soldier is dizzy and sleep for a second)
+          // Sleeping behaviour (Soldier is dizzy and sleeps for a second)
           this.player1.behaviour = new Sleeping(this.player1);
         }
       }

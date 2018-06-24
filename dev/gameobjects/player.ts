@@ -42,7 +42,7 @@ class Player extends GameObject implements Subject {
     }
   }
 
-  private pressKey(e: KeyboardEvent): void {
+  public pressKey(e: KeyboardEvent): void {
     this.behaviour.pressKey(e);
   }
 
