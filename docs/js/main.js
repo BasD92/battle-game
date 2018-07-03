@@ -274,14 +274,15 @@ var Screens;
         __extends(GameScreen, _super);
         function GameScreen() {
             _super.call(this, 'gamescreen');
-            this.zombies = new Array();
             this.objects = new Array();
             this.i = 0;
             this.x = 0;
             this.zombieCounter = 3;
             this.player1 = new Player("player1", 100, 100);
             for (this.i = 0; this.i < this.zombieCounter; this.i++) {
-                this.zombies.push(new Zombie(this.player1));
+                for (this.i = 0; this.i < this.zombieCounter; this.i++) {
+                    this.objects.push(new Zombie(this.player1));
+                }
             }
             for (this.x = 0; this.x < 2; this.x++) {
                 this.objects.push(new Food());
@@ -295,29 +296,31 @@ var Screens;
             if (this.zombieCounter == 0) {
                 console.log("Player wins!");
             }
-            for (var _i = 0, _a = this.zombies; _i < _a.length; _i++) {
+            for (var _i = 0, _a = this.objects; _i < _a.length; _i++) {
                 var zombie = _a[_i];
-                zombie.update();
-                if (Util.checkCollision(this.player1.getRectangle(), zombie.getRectangle())) {
-                    console.log("Collission player and zombie!");
-                    this.player1.life -= 1;
-                    this.player1.x = 100;
-                    this.player1.y = 100;
-                }
-                for (var _b = 0, _c = this.player1.bullets; _b < _c.length; _b++) {
-                    var bullet = _c[_b];
-                    if (Util.checkCollision(bullet.getRectangle(), zombie.getRectangle())) {
-                        this.zombieCounter -= 1;
-                        bullet.remove();
-                        zombie.remove();
-                        var index = this.player1.bullets.indexOf(bullet);
-                        this.player1.bullets.splice(index, 1);
-                        var index2 = this.zombies.indexOf(zombie);
-                        this.zombies.splice(index2, 1);
+                if (zombie instanceof Zombie) {
+                    zombie.update();
+                    if (Util.checkCollision(this.player1.getRectangle(), zombie.getRectangle())) {
+                        console.log("Collission player and zombie!");
+                        this.player1.life -= 1;
+                        this.player1.x = 100;
+                        this.player1.y = 100;
                     }
-                }
-                if (zombie.getRectangle().bottom > window.innerHeight - 5) {
-                    zombie.reset();
+                    for (var _b = 0, _c = this.player1.bullets; _b < _c.length; _b++) {
+                        var bullet = _c[_b];
+                        if (Util.checkCollision(bullet.getRectangle(), zombie.getRectangle())) {
+                            this.zombieCounter -= 1;
+                            bullet.remove();
+                            zombie.remove();
+                            var index = this.player1.bullets.indexOf(bullet);
+                            this.player1.bullets.splice(index, 1);
+                            var index2 = this.objects.indexOf(zombie);
+                            this.objects.splice(index2, 1);
+                        }
+                    }
+                    if (zombie.getRectangle().bottom > window.innerHeight - 5) {
+                        zombie.reset();
+                    }
                 }
             }
             for (var _d = 0, _e = this.objects; _d < _e.length; _d++) {
@@ -343,9 +346,11 @@ var Screens;
             if (this.player1.life == 0) {
                 Game.getInstance().gameOver();
                 this.player1.remove();
-                for (var _f = 0, _g = this.zombies; _f < _g.length; _f++) {
+                for (var _f = 0, _g = this.objects; _f < _g.length; _f++) {
                     var zombie = _g[_f];
-                    zombie.remove();
+                    if (zombie instanceof Zombie) {
+                        zombie.remove();
+                    }
                 }
                 for (var _h = 0, _j = this.objects; _h < _j.length; _h++) {
                     var object = _j[_h];

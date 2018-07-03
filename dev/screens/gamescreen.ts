@@ -4,7 +4,7 @@ namespace Screens {
     export class GameScreen extends FirstScreen {
 
         private player1: Player;
-        private zombies: Array<Zombie> = new Array();
+        // private zombies: Array<Zombie> = new Array();
         private objects: Array<GameObject> = new Array();
         private i: number = 0;
         private x: number = 0;
@@ -17,7 +17,9 @@ namespace Screens {
 
             // Push zombies to array
             for (this.i = 0; this.i < this.zombieCounter; this.i++) {
-                this.zombies.push(new Zombie(this.player1));
+                for (this.i = 0; this.i < this.zombieCounter; this.i++) {                 
+                    this.objects.push(new Zombie(this.player1));      
+                }
             }
 
             // Push objects to array
@@ -39,8 +41,10 @@ namespace Screens {
             }
 
             // Update all zombies in array and check collisions
-            for (let zombie of this.zombies) {
-                zombie.update();
+            for (let zombie of this.objects) {
+                if (zombie instanceof Zombie) {
+                    zombie.update();
+                
 
                 if (Util.checkCollision(this.player1.getRectangle(), zombie.getRectangle())) {
                     console.log("Collission player and zombie!");
@@ -63,14 +67,15 @@ namespace Screens {
                     zombie.remove();
                     let index = this.player1.bullets.indexOf(bullet);
                     this.player1.bullets.splice(index, 1);
-                    let index2 = this.zombies.indexOf(zombie);
-                    this.zombies.splice(index2, 1);
+                    let index2 = this.objects.indexOf(zombie);
+                    this.objects.splice(index2, 1);
                     }
                 }
 
                 if (zombie.getRectangle().bottom > window.innerHeight - 5) {
                     zombie.reset();
                 }
+            }
             }
 
             // Update all objects in array and check collisions
@@ -110,8 +115,10 @@ namespace Screens {
             if (this.player1.life == 0) {
                 Game.getInstance().gameOver();
                 this.player1.remove();
-                for (let zombie of this.zombies) {
-                    zombie.remove();
+                for (let zombie of this.objects) {
+                    if (zombie instanceof Zombie) {
+                        zombie.remove();
+                    }
                 }
                 for (let object of this.objects) {
                     object.remove();
